@@ -1,0 +1,37 @@
+[[package]]
+category = "main"
+description = "Enables Python programs to dynamically access arbitrary Java objects"
+name = "py4j"
+optional = false
+python-versions = "*"
+version = "0.10.9"
+
+[[package]]
+category = "main"
+description = "Apache Spark Python API"
+name = "pyspark"
+optional = false
+python-versions = "*"
+version = "3.0.1"
+
+[package.dependencies]
+py4j = "0.10.9"
+
+[package.extras]
+ml = ["numpy (>=1.7)"]
+mllib = ["numpy (>=1.7)"]
+sql = ["pandas (>=0.23.2)", "pyarrow (>=0.15.1)"]
+
+[metadata]
+content-hash = "103b01348baa342eba5aa3eaf2c543108cbb56168ebfd42990b819b34f0d00e2"
+lock-version = "1.0"
+python-versions = "^3.8"
+
+[metadata.files]
+py4j = [
+    {file = "py4j-0.10.9-py2.py3-none-any.whl", hash = "sha256:859ba728a7bb43e9c2bf058832759fb97a598bb28cc12f34f5fc4abdec08ede6"},
+    {file = "py4j-0.10.9.tar.gz", hash = "sha256:36ec57f43ff8ced260a18aa9a4e46c3500a730cac8860e259cbaa546c2b9db2f"},
+]
+pyspark = [
+    {file = "pyspark-3.0.1.tar.gz", hash = "sha256:38b485d3634a86c9a2923c39c8f08f003fdd0e0a3d7f07114b2fb4392ce60479"},
+]

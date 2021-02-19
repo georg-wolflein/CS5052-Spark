@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "cs5052-spark"
 version = "0.1.0"
-description = ""
+description = "CS5052 Project"
 authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]

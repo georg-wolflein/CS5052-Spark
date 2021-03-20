@@ -29,3 +29,14 @@ After this, you can run our project via:
 ```
 poetry run src/main.py
 ```
+
+### Backend API
+
+To run the backend API, run the following command (from the root folder of this repository):
+
+```
+docker-compose -f docker-compose.dev.yml up -d --build
+```
+
+This will start a local development server at http://localhost:5000.
+To access the API documentation, open http://localhost:5000/docs in your browser.

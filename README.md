@@ -11,11 +11,11 @@ Our project for CS5052.
 - [x] Search genre, show all movies in that genre
   - [x] Given a list of genres, search all movies belonging to each genre
 - [x] Search movies by year
-- [ ] List the top n movies with highest rating, ordered by the rating
-- [ ] List the top n movies with the highest number of watches, ordered by the number of watches
+- [x] List the top n movies with highest rating, ordered by the rating
+- [x] List the top n movies with the highest number of watches, ordered by the number of watches
 
-- [ ] Find the favourite genre of a given user, or group of users. Consider and justify how you will define ‘favourite’.
-- [ ] Compare the movie tastes of two users. Consider and justify how you will compare and present the data.
+- [x] Find the favourite genre of a given user, or group of users. Consider and justify how you will define ‘favourite’.
+- [x] Compare the movie tastes of two users. Consider and justify how you will compare and present the data.
 
 - [ ] Cluster users by movie taste.
 - [ ] Visualisation and interaction of the data set, using external libraries

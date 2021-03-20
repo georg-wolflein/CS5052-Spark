@@ -8,6 +8,7 @@ authors = ["Your Name <you@example.com>"]
 python = "^3.8"
 pyspark = "^3.0.1"
 pandas = "^1.2.2"
+matplotlib = "^3.3.4"
 
 [tool.poetry.dev-dependencies]
 

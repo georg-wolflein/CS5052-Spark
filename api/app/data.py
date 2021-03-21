@@ -57,6 +57,12 @@ df_tags = read_df("tags.csv", {
     "timestamp": "time"
 })
 
+df_movies = df_movies.withColumn("year",
+                                 sf.substring(df_movies.title, -5, 4).cast(IntegerType()))
+df_movies = df_movies.withColumn("title",
+                                 sf.expr("substring(title, 0, length(title)-7)"))
+df_movies = df_movies.withColumn("genres", sf.split("genres", "\|"))
+
 
 def search_user(user_id: int) -> DataFrame:
     """Given a user, get the number of movies watched per genre."""
@@ -69,4 +75,19 @@ def search_user(user_id: int) -> DataFrame:
     movies = movies.select(movies.movieId, sf.explode(
         sf.split(movies.genres, "\|")).alias("genre"))
     movies = movies.groupBy("genre").count()
+    return movies
+
+
+def search_movies_by_users(user_ids: [int]) -> DataFrame:
+    """Given a list of users, search all movies watched by each user."""
+    rated_movies = df_ratings.filter(df_ratings.userId.isin(user_ids))
+    tagged_movies = df_tags.filter(df_tags.userId.isin(user_ids))
+    movies = rated_movies.join(
+        tagged_movies, on=["userId", "movieId"], how="outer")
+    movies = movies.select("userId", "movieId").distinct()
+    movies = movies.groupBy("movieId")\
+        .count()\
+        .join(df_movies, on=["movieId"])\
+        .filter(f"count = {len(user_ids)}")\
+        .drop("count")
     return movies

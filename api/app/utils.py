@@ -17,3 +17,12 @@ def _ify(func, factory=list):
 
 listify = partial(_ify, factory=list)
 dictify = partial(_ify, factory=dict)
+
+
+def mapify(mapper):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            return map(mapper, func(*args, **kwargs))
+        return wrapper
+    return decorator

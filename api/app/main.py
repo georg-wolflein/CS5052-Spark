@@ -1,14 +1,13 @@
 from fastapi import FastAPI, APIRouter
 import typing
 import logging
+from pydantic import BaseModel
 
 from __version__ import __version__
 import data
 from utils import dictify
-from pydantic import BaseModel
+from log import logger
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 app = FastAPI(title="Movie Backend API",
               version=__version__)
 router = APIRouter(prefix="/api")

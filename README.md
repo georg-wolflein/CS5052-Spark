@@ -30,13 +30,30 @@ After this, you can run our project via:
 poetry run src/main.py
 ```
 
-### Backend API
+## Backend API
 
-To run the backend API, run the following command (from the root folder of this repository):
+The backend API may either be run in development (`dev`) or production (`prod`) mode.
+In `dev` mode, the Python code is mounted in a volume, and the API server is restarted with each code change.
+In `prod` mode, the Python code is baked into the Docker image and cannot be modified.
+
+### Production mode
+
+To run the backend API in `prod` mode, run the following command (from the root folder of this repository):
+
+```
+docker-compose -f docker-compose.prod.yml up -d --build
+```
+
+This will start a local development server at http://localhost:5000.
+To access the API documentation, open http://localhost:5000/docs in your browser.
+
+### Development mode
+
+To instead run the API server in `dev` mode, run:
 
 ```
 docker-compose -f docker-compose.dev.yml up -d --build
 ```
 
-This will start a local development server at http://localhost:5000.
-To access the API documentation, open http://localhost:5000/docs in your browser.
+Note that the development version uses a mounted volume which means that you must share the relevant folder (i.e. the root directory of this repository) with docker.
+See instructions [here](https://docs.docker.com/docker-for-windows/#file-sharing).

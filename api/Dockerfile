@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8 as base
 
 # Install Java
 RUN apt-get update && \
@@ -28,5 +28,12 @@ RUN pip install --upgrade pip && \
 COPY ./pyproject.toml ./poetry.lock* /app/
 RUN poetry install --no-root --no-dev
 
-# Copy app
+# Development
+FROM base as dev
+VOLUME /app
+ENTRYPOINT /start-reload.sh
+
+# Production
+FROM base as prod
 COPY ./app /app
+ENTRYPOINT /start.sh

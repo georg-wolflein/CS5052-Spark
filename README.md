@@ -23,12 +23,21 @@ Our project for CS5052.
 
 ## Running
 
-We use the `poetry` build system, install this with `pip install poetry`.
-After this, you can run our project via:
+We use the `poetry` build system, install it and update dependencies as shown:
+```
+pip install poetry
+poetry install
+```
 
+After doing this, you'll need to start up the backend API, for information on how to do this please see the **Backend API** section below.
+
+Finally, we use `react` as a frontend framework. After starting the backend, you'll need to start up the frontend from the `frontend` folder:
 ```
-poetry run src/main.py
+npm i
+npm start
 ```
+
+You can now access the website from [`http://localhost:3000`](http://localhost:3000).
 
 ## Backend API
 

@@ -10,8 +10,8 @@ class Main extends React.Component {
     render() {
         return (
             <Switch>
-            <Route exact path='/' component={Results}></Route>
-            <Route exact path='/visualisations' component={Visualisations}></Route>
+                <Route exact path='/' component={Results}></Route>
+                <Route exact path='/visualisations' component={Visualisations}></Route>
             </Switch>
         );
     }

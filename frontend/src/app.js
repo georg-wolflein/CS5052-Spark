@@ -10,6 +10,25 @@ import Main from './main.js'
  * TODO: Do we need <Links> in here? `import { Link } from "react-router-dom";`
  */
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.state = {
+            search: "",
+            type: ""
+        };
+    }
+
+    handleChange(e) {
+        const name = e.target.id;
+        this.setState({ [name] : e.target.value });
+    }
+
+    onClick() {
+        console.log(this.state);
+    }
+
     render() {
         return (
             <div className="app">
@@ -18,7 +37,10 @@ class App extends React.Component {
                     <Nav className="mr-auto">
                         <Nav.Link href="/visualisations">Visualisations</Nav.Link>
                     </Nav>
-                    <SearchBar />
+                    <SearchBar search={ this.state.search }
+                        type={ this.state.type }
+                        onChange={ this.handleChange }
+                        onClick={ this.onClick } />
                 </Navbar>
 
                 <Container className="mt-2">

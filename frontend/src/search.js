@@ -9,20 +9,6 @@ import Button from 'react-bootstrap/Button';
  * @see README.md for more info on search modes.
  */
 class SearchBar extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            search: "",
-            type: ""
-        };
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(e) {
-        console.log(this.state);
-    }
-
     render() {
         return (
             <Form inline>
@@ -32,10 +18,10 @@ class SearchBar extends React.Component {
                             Input
                         </Form.Label>
                         <Form.Control className="mr-sm-2" 
-                                    id="input" 
+                                    id="search" 
                                     placeholder="Toy Story"
-                                    value={ this.state.search } 
-                                    onChange={ (e) => { this.setState({ search: e.target.value }); } }/>
+                                    value={ this.props.search } 
+                                    onChange={ (e) => { this.props.onChange(e); } }/>
                     </Col>
 
                     <Col xs="auto">
@@ -45,8 +31,8 @@ class SearchBar extends React.Component {
                         <Form.Control as="select"
                                     className="mr-sm-2"
                                     id="type"
-                                    value={ this.state.type }
-                                    onChange={ (e) => { this.setState({ type: e.target.value }); } }
+                                    value={ this.props.type }
+                                    onChange={ (e) => { this.props.onChange(e); } }
                                     custom>
                             <option value="movie">Movie</option>
                             <option value="user">Users</option>
@@ -55,7 +41,7 @@ class SearchBar extends React.Component {
                     </Col>
 
                     <Col xs="auto">
-                        <Button onClick={ this.handleClick }>
+                        <Button onClick={ () => { this.props.onClick(); } }>
                             Submit
                         </Button>
                     </Col>

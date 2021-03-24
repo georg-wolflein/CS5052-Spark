@@ -39,6 +39,18 @@ npm start
 
 You can now access the website from [`http://localhost:3000`](http://localhost:3000).
 
+## Search Interface
+To search through the dataset, we have implemented a permissive search bar to display the results. 
+
+Seach methods are as follows:
+- **Single user**: In user mode, a single interger (`id`) will display movie & genre statistics about the user with that id
+- **Multiple users**: In user mode, a comma seperated list of intergers (`ids`) will display the movie & genre statistics of **the collection of users** including their favourite genre as a group
+  - If only 2 users are specified, we additionally show a visualisation of the differences between their movie tastes
+- **Single movie**: In movie mode, a single interger (`id`) or string (`title`) will display the average rating of that movie, as well as the number of users who have watched that movie
+- **Genres**: In genre mode, a comma seperated list of strings (`genres`) will show the list of movies with that genre
+
+**TODO: Advanced tasks such as clustering or visualisations of the dataset as a whole will be given in an additional page. The movie recommendations will probably be added to the single user search mode.**
+
 ## Backend API
 
 The backend API may either be run in development (`dev`) or production (`prod`) mode.

@@ -3,7 +3,9 @@ import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import SearchBar from './search.js'
 import React from 'react';
-import Main from './main.js'
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import Results from './results.js';
+import Visualisations from './visualisations.js';
 
 /**
  * Component for holding the main layout of the application.
@@ -13,10 +15,9 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.onClick = this.onClick.bind(this);
         this.state = {
             search: "",
-            type: ""
+            type: "movie"
         };
     }
 
@@ -25,13 +26,9 @@ class App extends React.Component {
         this.setState({ [name] : e.target.value });
     }
 
-    onClick() {
-        console.log(this.state);
-    }
-
     render() {
         return (
-            <div className="app">
+            <Router>
                 <Navbar bg="dark" variant="dark">
                     <Navbar.Brand href="/">Spark</Navbar.Brand>
                     <Nav className="mr-auto">
@@ -39,14 +36,29 @@ class App extends React.Component {
                     </Nav>
                     <SearchBar search={ this.state.search }
                         type={ this.state.type }
-                        onChange={ this.handleChange }
-                        onClick={ this.onClick } />
+                        onChange={ this.handleChange } />
                 </Navbar>
 
                 <Container className="mt-2">
-                    <Main />
+                    <Switch>
+                        <Route exact path="/" render={ () => (
+                            <div className="home">
+                                <h1>Spark Practical</h1>
+                                <p>Enter a search query, or <Link to="/visualisations">explore visualisations</Link>!</p>
+                            </div>
+                        )}/>
+                        <Route path="/search/:type/:search" component={ Results } />
+                        <Route path='/visualisations' component={ Visualisations } />
+                        <Route path="*" render={ () => (
+                            <div className="home">
+                                <h1>404</h1>
+                                <p>Please return <Link to="/">Home</Link>.</p>
+                            </div>
+                        )}/>
+
+                    </Switch>
                 </Container>
-            </div>
+            </Router>
         );
     }
 }

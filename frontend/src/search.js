@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { Route } from 'react-router-dom'
 
 /**
  * Search bar to allow people to search for things within the dataset.
@@ -9,6 +10,10 @@ import Button from 'react-bootstrap/Button';
  * @see README.md for more info on search modes.
  */
 class SearchBar extends React.Component {
+    getURL() {
+        return "/search/" + this.props.type + "/" + this.props.search;
+    }
+
     render() {
         return (
             <Form inline>
@@ -41,9 +46,11 @@ class SearchBar extends React.Component {
                     </Col>
 
                     <Col xs="auto">
-                        <Button onClick={ () => { this.props.onClick(); } }>
-                            Submit
-                        </Button>
+                        <Route render={ ({ history }) => (
+                            <Button onClick={ () => { history.push(this.getURL()) } }>
+                                Submit
+                            </Button>
+                        )} />
                     </Col>
                 </Form.Row>
             </Form>

@@ -22,7 +22,7 @@ class App extends React.Component {
                 </Navbar>
 
                 <Container className="mt-2">
-                    <Main/>
+                    <Main />
                 </Container>
             </div>
         );

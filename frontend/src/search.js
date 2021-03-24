@@ -9,6 +9,20 @@ import Button from 'react-bootstrap/Button';
  * @see README.md for more info on search modes.
  */
 class SearchBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: "",
+            type: ""
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e) {
+        console.log(this.state);
+    }
+
     render() {
         return (
             <Form inline>
@@ -19,7 +33,9 @@ class SearchBar extends React.Component {
                         </Form.Label>
                         <Form.Control className="mr-sm-2" 
                                     id="input" 
-                                    placeholder="Toy Story"/>
+                                    placeholder="Toy Story"
+                                    value={ this.state.search } 
+                                    onChange={ (e) => { this.setState({ search: e.target.value }); } }/>
                     </Col>
 
                     <Col xs="auto">
@@ -29,6 +45,8 @@ class SearchBar extends React.Component {
                         <Form.Control as="select"
                                     className="mr-sm-2"
                                     id="type"
+                                    value={ this.state.type }
+                                    onChange={ (e) => { this.setState({ type: e.target.value }); } }
                                     custom>
                             <option value="movie">Movie</option>
                             <option value="user">Users</option>
@@ -37,7 +55,7 @@ class SearchBar extends React.Component {
                     </Col>
 
                     <Col xs="auto">
-                        <Button type="submit">
+                        <Button onClick={ this.handleClick }>
                             Submit
                         </Button>
                     </Col>

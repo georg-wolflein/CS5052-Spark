@@ -9,8 +9,6 @@ import Button from 'react-bootstrap/Button';
  * @see README.md for more info on search modes.
  */
 class SearchBar extends React.Component {
-    
-
     render() {
         return (
             <Form inline>

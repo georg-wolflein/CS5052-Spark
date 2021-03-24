@@ -28,7 +28,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router>
+            <Router forceRefresh={true}>
                 <Navbar bg="dark" variant="dark">
                     <Navbar.Brand href="/">Spark</Navbar.Brand>
                     <Nav className="mr-auto">
@@ -52,7 +52,7 @@ class App extends React.Component {
                         <Route path="*" render={ () => (
                             <div className="home">
                                 <h1>404</h1>
-                                <p>Please return <Link to="/">Home</Link>.</p>
+                                <p>Please <Link to="/">return home</Link>.</p>
                             </div>
                         )}/>
 

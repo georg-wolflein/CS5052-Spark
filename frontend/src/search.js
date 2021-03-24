@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { Route } from 'react-router-dom'
+import { validate } from './validate.js'
 
 /**
  * Search bar to allow people to search for things within the dataset.
@@ -10,6 +11,21 @@ import { Route } from 'react-router-dom'
  * @see README.md for more info on search modes.
  */
 class SearchBar extends React.Component {
+    /**
+     * Get the placeholder text for the query box
+     * @returns the placeholder text for the query box
+     */
+    getPlaceholder() {
+        if (this.props.type === "movie") return "Toy Story";
+        else if(this.props.type === "user") return "1, 2";
+        else if(this.props.type === "genre") return "Action";
+        return "";
+    }
+
+    /**
+     * Get the URL to go to
+     * @returns the URL to redirect to
+     */
     getURL() {
         return "/search/" + this.props.type + "/" + this.props.search;
     }
@@ -22,9 +38,10 @@ class SearchBar extends React.Component {
                         <Form.Label htmlFor="input" srOnly>
                             Input
                         </Form.Label>
-                        <Form.Control className="mr-sm-2" 
+                        <Form.Control isInvalid={ !validate("search", this.props.search) }
+                                    className="mr-sm-2" 
                                     id="search" 
-                                    placeholder="Toy Story"
+                                    placeholder={ this.getPlaceholder() }
                                     value={ this.props.search } 
                                     onChange={ (e) => { this.props.onChange(e); } }/>
                     </Col>
@@ -33,7 +50,8 @@ class SearchBar extends React.Component {
                         <Form.Label htmlFor="type" srOnly>
                             Type
                         </Form.Label>
-                        <Form.Control as="select"
+                        <Form.Control isInvalid={ !validate("type", this.props.type) }
+                                    as="select"
                                     className="mr-sm-2"
                                     id="type"
                                     value={ this.props.type }
@@ -47,7 +65,10 @@ class SearchBar extends React.Component {
 
                     <Col xs="auto">
                         <Route render={ ({ history }) => (
-                            <Button onClick={ () => { history.push(this.getURL()) } }>
+                            <Button onClick={ () => { 
+                                if(validate("type", this.props.type) && validate("search", this.props.search)) {
+                                    if(this.props.search !== "") history.push(this.getURL());
+                                } } }>
                                 Submit
                             </Button>
                         )} />

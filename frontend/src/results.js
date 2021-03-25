@@ -1,55 +1,44 @@
 import React from "react";
 import { Redirect } from "react-router";
+import MovieResult from "./results/movieResult.js";
 import { validate } from "./validate.js";
-import { API } from "./api.js";
 
 class Results extends React.Component {
-  _mounted = false;
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: this.props.match.params.search,
-      type: this.props.match.params.type,
-    };
-  }
-
-  componentDidMount() {
-    // TODO: Fetch results here from the backend
-    // TODO: Currently simulating async using setTimeout
-    this._mounted = true;
-
-    API.searchMoviesByGenres(["Action", "Crime"]).then(console.log);
-
-    setTimeout(() => {
-      if (this._mounted) {
-        console.log("hi");
-        this.setState({ test: "hi" });
-      }
-    }, 3000);
-  }
-
-  componentWillUnmount() {
-    this._mounted = false;
-  }
-
-  render() {
-    // First get if the state is valid
-    if (!validate("search", this.state) || !validate("type", this.state)) {
-      return <Redirect to="/" />;
+    _mounted = false;
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: this.props.match.params.search,
+            type: this.props.match.params.type,
+        };
     }
 
-    // Wait for the backend to respond
-    if (this.state.test === undefined) {
-      return <h1>Loading from server...</h1>;
+    componentDidMount() {
+        // We don't want to call the API from here
+        // Let's parse the query to see what component to create
+        this.setState({ component: MovieResult });
+        this._mounted = true;
     }
 
-    // Valid state, render the results
-    return (
-      <p>
-        Type: {this.state.type} <br /> search: {this.state.search}
-      </p>
-    );
-  }
+    componentWillUnmount() {
+        this._mounted = false;
+    }    
+
+    render() {
+        // First get if the state is valid
+        if (!validate("search", this.state) || !validate("type", this.state)) {
+        return <Redirect to="/" />;
+        }
+
+        // Wait for mounting...
+        if (!this._mounted) {
+          return <h1>Loading from server...</h1>;
+        }
+
+        // Valid state, render whatever component we have with its properities
+        const Component = this.state.component;
+        return <Component search={ this.state.search } />;
+    }
 }
 
 export default Results;

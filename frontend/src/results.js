@@ -27,12 +27,12 @@ class Results extends React.Component {
     render() {
         // First get if the state is valid
         if (!validate("search", this.state) || !validate("type", this.state)) {
-        return <Redirect to="/" />;
+            return <Redirect to="/" />;
         }
 
         // Wait for mounting...
         if (!this._mounted) {
-          return <h1>Loading from server...</h1>;
+            return <h1>Loading from server...</h1>;
         }
 
         // Valid state, render whatever component we have with its properities

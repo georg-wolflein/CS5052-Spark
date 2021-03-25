@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import { validate } from './validate.js'
 
 class Results extends React.Component {
+    _mounted = false;
     constructor(props) {
         super(props);
         this.state = {
@@ -11,7 +12,21 @@ class Results extends React.Component {
         };
     }
 
-    // See componentsDidMount()
+    componentDidMount() {
+        // TODO: Fetch results here from the backend
+        // TODO: Currently simulating async using setTimeout
+        this._mounted = true;
+        setTimeout(() => {
+            if(this._mounted) {
+                console.log("hi");
+                this.setState({ test: "hi" });
+            }
+        }, 3000);
+    }
+
+    componentWillUnmount() {
+        this._mounted = false;
+    }
 
     render() {
         // First get if the state is valid
@@ -20,10 +35,17 @@ class Results extends React.Component {
                 <Redirect to="/" />
             );
         } 
+
+        // Wait for the backend to respond
+        if(this.state.test === undefined) {
+            return (
+                <h1>Loading from server...</h1>
+            );
+        }
         
         // Valid state, render the results
         return (
-            <p>hi {this.state.type} & {this.state.search}</p>
+            <p>Type: {this.state.type} <br/> search: {this.state.search}</p>
         );
     }
 }

@@ -9,7 +9,6 @@ import Visualisations from './visualisations.js';
 
 /**
  * Component for holding the main layout of the application.
- * TODO: Do we need <Links> in here? `import { Link } from "react-router-dom";`
  */
 class App extends React.Component {
     constructor(props) {
@@ -28,7 +27,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router forceRefresh={true}>
+            <Router forceRefresh={ true }>
                 <Navbar bg="dark" variant="dark">
                     <Navbar.Brand href="/">Spark</Navbar.Brand>
                     <Nav className="mr-auto">
@@ -55,7 +54,6 @@ class App extends React.Component {
                                 <p>Please <Link to="/">return home</Link>.</p>
                             </div>
                         )}/>
-
                     </Switch>
                 </Container>
             </Router>

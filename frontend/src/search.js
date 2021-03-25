@@ -18,7 +18,7 @@ class SearchBar extends React.Component {
     getPlaceholder() {
         if (this.props.type === "movie") return "Toy Story";
         else if(this.props.type === "user") return "1, 2";
-        else if(this.props.type === "genre") return "Action";
+        else if(this.props.type === "genre") return "Action, Horror";
         return "";
     }
 
@@ -71,7 +71,7 @@ class SearchBar extends React.Component {
                                 } } }>
                                 Submit
                             </Button>
-                        )} />
+                        )}/>
                     </Col>
                 </Form.Row>
             </Form>

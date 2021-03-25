@@ -38,7 +38,7 @@ class SearchBar extends React.Component {
                         <Form.Label htmlFor="input" srOnly>
                             Input
                         </Form.Label>
-                        <Form.Control isInvalid={ !validate("search", this.props.search) }
+                        <Form.Control isInvalid={ !validate("search", this.props) }
                                     className="mr-sm-2" 
                                     id="search" 
                                     placeholder={ this.getPlaceholder() }
@@ -50,7 +50,7 @@ class SearchBar extends React.Component {
                         <Form.Label htmlFor="type" srOnly>
                             Type
                         </Form.Label>
-                        <Form.Control isInvalid={ !validate("type", this.props.type) }
+                        <Form.Control isInvalid={ !validate("type", this.props) }
                                     as="select"
                                     className="mr-sm-2"
                                     id="type"
@@ -66,7 +66,7 @@ class SearchBar extends React.Component {
                     <Col xs="auto">
                         <Route render={ ({ history }) => (
                             <Button onClick={ () => { 
-                                if(validate("type", this.props.type) && validate("search", this.props.search)) {
+                                if(validate("type", this.props) && validate("search", this.props)) {
                                     if(this.props.search !== "") history.push(this.getURL());
                                 } } }>
                                 Submit

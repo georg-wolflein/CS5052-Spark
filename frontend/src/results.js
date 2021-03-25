@@ -30,7 +30,7 @@ class Results extends React.Component {
 
     render() {
         // First get if the state is valid
-        if(!validate("search", this.state.search) || !validate("type", this.state.type)) {
+        if(!validate("search", this.state) || !validate("type", this.state)) {
             return (
                 <Redirect to="/" />
             );

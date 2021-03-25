@@ -5,10 +5,10 @@ import { BaseResult, resultDisplayer } from './baseResult.js';
  * Movies class which handles movie API searches
  */
 class Movies extends BaseResult {
-    async callAPI() {
+    async callAPI(search) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                this.okay = "okfsdfday";
+                this.okay = search;
                 resolve();
             }, 2000);
         });

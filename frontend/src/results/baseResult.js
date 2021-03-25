@@ -3,9 +3,10 @@ import React from 'react';
 export class BaseResult {
     /**
      * Call the API to get a result
+     * @param search a search query
      * @returns a promise which should call the API to set state for this object
      */
-    async callAPI() {
+    async callAPI(search) {
         return new Promise((resolve, reject) => {
             resolve();
         });
@@ -37,7 +38,7 @@ export function resultDisplayer(resultClass) {
         componentDidMount() {
             // Here, call the API function given to us & then mount the component
             this._mounted = true;
-            resultClass.callAPI().then(() => {
+            resultClass.callAPI(this.props.search).then(() => {
                 if(this._mounted) this.setState({ success: true, loaded: true });
             }).catch(() => {
                 if(this._mounted) this.setState({ success: false, loaded: true });

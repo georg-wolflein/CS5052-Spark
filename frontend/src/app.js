@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import SearchBar from './search.js'
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import Results from './results.js';
+import Result from './result.js';
 import Visualisations from './visualisations.js';
 
 /**
@@ -46,7 +46,7 @@ class App extends React.Component {
                                 <p>Enter a search query, or <Link to="/visualisations">explore visualisations</Link>!</p>
                             </div>
                         )}/>
-                        <Route path="/search/:type/:search" component={ Results } />
+                        <Route path="/search/:type/:search" component={ Result } />
                         <Route path='/visualisations' component={ Visualisations } />
                         <Route path="*" render={ () => (
                             <div className="home">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { API } from './api.js'
 import { BaseResult, resultDisplayer } from './baseResult.js';
 
 /**
@@ -7,16 +8,20 @@ import { BaseResult, resultDisplayer } from './baseResult.js';
 class Movies extends BaseResult {
     async callAPI(search) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                this.okay = search;
-                resolve();
-            }, 2000);
+            API.searchMoviesByTitle(search).then((value) => {
+                this.movies = [];
+                for(const movie of value) {
+                    this.movies.push(movie.title);
+                } resolve();
+            }).catch((reason) => {
+                reject(reason);
+            });
         });
     }
     
     render() {
         return (
-            <h1>Okay {this.okay}</h1>
+            <h1>Okay {this.movies}</h1>
         );
     }
 }

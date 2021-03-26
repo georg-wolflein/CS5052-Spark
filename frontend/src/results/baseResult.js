@@ -40,8 +40,8 @@ export function resultDisplayer(resultClass) {
             this._mounted = true;
             resultClass.callAPI(this.props.search).then(() => {
                 if(this._mounted) this.setState({ success: true, loaded: true });
-            }).catch(() => {
-                if(this._mounted) this.setState({ success: false, loaded: true });
+            }).catch((reason) => {
+                if(this._mounted) this.setState({ success: false, reason: reason.toString(), loaded: true });
             });
         }
     
@@ -57,7 +57,10 @@ export function resultDisplayer(resultClass) {
     
             // Ensure we loaded successfully
             if(!this.state.success) return (
-                <h1>There was an error while loading :(</h1>
+                <div id="error">
+                    <h1>An error occured!</h1>
+                    <p>{ this.state.reason }</p>
+                </div>
             );
     
             // Otherwise, return the render method given to us

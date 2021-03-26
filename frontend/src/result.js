@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router";
-import MovieResult from "./results/movieResult.js";
+import { MovieResult, UserResult } from "./results";
 import { validate } from "./validate.js";
 
-class Results extends React.Component {
+class Result extends React.Component {
     _mounted = false;
     constructor(props) {
         super(props);
@@ -16,7 +16,24 @@ class Results extends React.Component {
     componentDidMount() {
         // We don't want to call the API from here
         // Let's parse the query to see what component to create
-        this.setState({ component: MovieResult });
+        var component;
+        if(this.state.type === "movie") {
+            // Will always expect a single movie title, pipe to movie component
+            component = MovieResult;
+        }
+
+        if(this.state.type === "user") {
+            // Will have a collection of user ids, pipe to user component
+            component = UserResult;
+        }
+
+        if(this.state.type === "genre") {
+            // Genres are always in a comma seprated list, pipe to genre component
+            //component = GenreResult;
+        }
+
+        if(component !== undefined)
+            this.setState({ component: component });
         this._mounted = true;
     }
 
@@ -41,4 +58,4 @@ class Results extends React.Component {
     }
 }
 
-export default Results;
+export default Result;

@@ -1,10 +1,10 @@
-import React from 'react';
-import { BaseResult, resultDisplayer } from './baseResult.js';
+import { API } from './api.js'
+import { BaseResult } from './baseResult.js';
 
 /**
  * Users class which handles user API searches
  */
-class Users extends BaseResult {
+class UserResult extends BaseResult {
     async callAPI(search) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -14,14 +14,11 @@ class Users extends BaseResult {
         });
     }
     
-    render() {
+    draw() {
         return (
             <h1>Hi {this.okay}</h1>
         );
     }
 }
-
-// Export the component using the results displayer function
-const UserResult = resultDisplayer(new Users());
 
 export default UserResult;

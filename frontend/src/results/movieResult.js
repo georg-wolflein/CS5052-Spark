@@ -1,11 +1,10 @@
-import React from 'react';
 import { API } from './api.js'
-import { BaseResult, resultDisplayer } from './baseResult.js';
+import { BaseResult } from './baseResult.js';
 
 /**
  * Movies class which handles movie API searches
  */
-class Movies extends BaseResult {
+class MovieResult extends BaseResult {
     async callAPI(search) {
         return new Promise((resolve, reject) => {
             API.searchMoviesByTitle(search).then((value) => {
@@ -19,14 +18,11 @@ class Movies extends BaseResult {
         });
     }
     
-    render() {
+    draw() {
         return (
             <h1>Okay {this.movies}</h1>
         );
     }
 }
-
-// Export the component using the results displayer function
-const MovieResult = resultDisplayer(new Movies());
 
 export default MovieResult;

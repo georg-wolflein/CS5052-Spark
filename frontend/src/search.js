@@ -30,10 +30,6 @@ class SearchBar extends React.Component {
         return "/search/" + this.props.type + "/" + this.props.search;
     }
 
-    _handleKeyDown(e) {
-        console.log(e);
-    } 
-
     /**
      * Called when either the button is pressed, or enter key is pressed
      * @param history the history 

@@ -1,10 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router";
-import { MovieResult, UserResult } from "./results";
+import { MovieResult, UserResult, GenreResult } from "./results";
 import { validate } from "./validate.js";
 
 class Result extends React.Component {
     _mounted = false;
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +30,7 @@ class Result extends React.Component {
 
         if(this.state.type === "genre") {
             // Genres are always in a comma seprated list, pipe to genre component
-            //component = GenreResult;
+            component = GenreResult;
         }
 
         if(component !== undefined)
@@ -39,7 +40,7 @@ class Result extends React.Component {
 
     componentWillUnmount() {
         this._mounted = false;
-    }    
+    } 
 
     render() {
         // First get if the state is valid

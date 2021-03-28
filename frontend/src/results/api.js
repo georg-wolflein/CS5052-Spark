@@ -15,13 +15,17 @@ export const API = {
     searchMoviesByYear: async (year) =>
         (await api.get("movies/search/year", { params: { year } })).data,
 
-    // users: 
+    // users: done
     searchMoviesByUsers: async (users) =>
         (await api.post("movies/search/users", users)).data,
 
-    // genres: 
+    // genres: done 
     searchMoviesByGenres: async (genres) =>
         (await api.post("movies/search/genres", genres)).data,
+
+    // genres: 
+    getGenresByUser: async (userId) =>
+        (await api.get(`users/${userId}/genres`)).data,
 
     // movies: tbi (to be incorporated)
     getNumberOfViews: async (movieId) =>

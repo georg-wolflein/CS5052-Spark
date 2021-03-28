@@ -5,6 +5,9 @@ export class BaseResult extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            title: "",
+            heading: [ "Title", "Year", "Genres", "Rating", "Watched" ],
+            movies: [],
             loaded: false,
         }
     }
@@ -28,6 +31,35 @@ export class BaseResult extends React.Component {
      */
     componentWillUnmount() {
         this._mounted = false;
+    }
+
+    /**
+     * Push a number of movies into the state
+     * @param movies the movies
+     */
+    pushMovies(movies, cb) {
+        for(const rawMovie of movies) {
+            var movie = [];
+
+            // The title & year
+            movie.push(rawMovie.title);
+            movie.push(rawMovie.year);
+
+            // The genres
+            var genres = "";
+            for(const genre of rawMovie.genres) {
+                genres += genre + ", ";
+            } movie.push(genres.substring(0, genres.length - 2));
+
+            // Rating
+            movie.push("tbd");
+
+            // Watched
+            movie.push("tbd");
+
+            // Finally push the list to be rendered
+            this.state.movies.push(movie);
+        } cb();
     }
 
     /**

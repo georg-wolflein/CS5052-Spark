@@ -11,7 +11,9 @@ from utils import listify, dictify, mapify
 from log import logger
 
 app = FastAPI(title="Movie Backend API",
-              version=__version__)
+              version=__version__,
+              docs_url="/api/docs",
+              openapi_url="/api/docs/openapi.json")
 router = APIRouter(prefix="/api")
 
 

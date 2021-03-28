@@ -4,5 +4,15 @@ services:
     build:
       context: api
       target: prod
+  frontend:
+    depends_on: [api]
+    build:
+      context: frontend
+      target: prod
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    environment:
+      - REACT_APP_API_URL=http://api
     ports:
-      - "5000:80"
+      - "3000:3000"

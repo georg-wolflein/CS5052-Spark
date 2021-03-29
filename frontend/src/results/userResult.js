@@ -8,13 +8,15 @@ import { CompareUsers } from './compareUsers.js';
  */
 class UserResult extends BaseResult {
     async callAPI(search) {
+        this.setState({ users: null });
         var query = search.replaceAll(" ", "").split(",");
 
         // Get the number of users searched for
         const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;
         if(items === 1) this.setState({title: "Movies watched by user " + search});
         else this.setState({title: "Movies watched by users: [" + search + "]"});
-        this.setState({ users: query });
+        
+        if(items === 2) this.setState({ users: query });
 
         return new Promise((resolve, reject) => {            
             // TODO: Given a user, get the number of movies watched per genre
@@ -30,7 +32,7 @@ class UserResult extends BaseResult {
     
     draw() {
         // If we have to compare users, show the comparison
-        if(this.users !== null) {
+        if(this.state.users !== null) {
             return (
                 <div id="users">
                     <h1>{ this.state.title }</h1><br/>

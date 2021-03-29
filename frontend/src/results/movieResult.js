@@ -9,10 +9,10 @@ class MovieResult extends BaseResult {
     async callAPI(search) {
         const query = search.toLowerCase();
         return new Promise((resolve, reject) => {
-            // If the query is in the form "top rated [number]", then return the top n
-            if(/^top rated \d+$/.test(query)) {
-                var rated = query.substring("top rated ".length);
-                this.setState({title: "Top rated " + rated + " movies"}); 
+            // If the query is in the form "top [number] rated", then return the top n
+            if(/^top \d+ rated$/.test(query)) {
+                var rated = query.substring("top ".length, query.indexOf(" rated"));
+                this.setState({title: "Top " + rated + " rated movies"}); 
                 API.topRatedMovies(rated).then((value) => {
                     this.pushMovies(value, resolve);
                 }).catch((reason) => {
@@ -20,10 +20,10 @@ class MovieResult extends BaseResult {
                 });
             }
 
-            // If it's in the form "top watched [number]", return that
-            else if(/^top watched \d+$/.test(query)) {
-                var watched = query.substring("top watched ".length);
-                this.setState({title: "Top watched " + watched + " movies"}); 
+            // If it's in the form "top [rated] watched", return that
+            else if(/^top \d+ watched$/.test(query)) {
+                var watched = query.substring("top ".length, query.indexOf(" watched"));
+                this.setState({title: "Top " + watched + " watched movies"}); 
                 API.topWatchedMovies(watched).then((value) => {
                     this.pushMovies(value, resolve);
                 }).catch((reason) => {

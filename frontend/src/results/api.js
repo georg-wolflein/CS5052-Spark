@@ -5,7 +5,9 @@ const api = axios.create({
 });
 
 export const API = {
-    getVersion: async () => (await api.get("version")).data,
+    // not used
+    getVersion: async () => 
+        (await api.get("version")).data,
 
     // movies: done
     searchMoviesByTitle: async (title) =>
@@ -23,20 +25,13 @@ export const API = {
     searchMoviesByGenres: async (genres) =>
         (await api.post("movies/search/genres", genres)).data,
 
-    // genres: 
+    // TODO: users
     getGenresByUser: async (userId) =>
         (await api.get(`users/${userId}/genres`)).data,
 
-    // movies: tbi (to be incorporated)
-    getNumberOfViews: async (movieId) =>
-        (await api.get(`movies/${movieId}/watched`)).data,
-
-    // movies: tbi
-    getRating: async (movieId) =>
-        (await api.get(`movies/${movieId}/rating`)).data,
-
     // movies: done
-    topRatedMovies: async (n) => (await api.get(`movies/top/rated/${n}`)).data,
+    topRatedMovies: async (n) => 
+        (await api.get(`movies/top/rated/${n}`)).data,
 
     // movies: done
     topWatchedMovies: async (n) =>

@@ -52,6 +52,11 @@ See instructions [here](https://docs.docker.com/docker-for-windows/#file-sharing
 You can now access the website from [`http://localhost:3000`](http://localhost:3000).
 Any changes to the frontend or backend code will restart the fronend and/or backend servers automatically.
 
+To get console output on the frontend, simply follow the logs of the container running the frontend:
+```
+docker logs -f <container id>
+```
+
 ## Search Interface
 
 To search through the dataset, we have implemented a permissive search bar to display the results. This search bar allows the user to search using an input box (which controls the actual search query) & a dropdown option list (which controls the mode to search with).

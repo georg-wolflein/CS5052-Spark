@@ -13,12 +13,12 @@ class GenreResult extends BaseResult {
             query[i] = query[i].charAt(0).toUpperCase() + query[i].slice(1);
         }
         
+        // Get the number of genres searched for
+        const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;
+        if(items === 1) this.setState({title: "Movies about " + search});
+        else this.setState({title: "Movies about [" + search + "]"});
+
         return new Promise((resolve, reject) => {
-            // Get the number of genres searched for
-            const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;
-            if(items === 1) this.setState({title: "Statistics about " + search});
-            else this.setState({title: "Statistics about genres: [" + search + "]"});
-            
             // Call the API
             API.searchMoviesByGenres(query).then((value) => {
                 this.pushMovies(value, resolve);

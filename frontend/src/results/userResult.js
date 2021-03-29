@@ -8,7 +8,7 @@ import { CompareUsers } from './compareUsers.js';
  */
 class UserResult extends BaseResult {
     async callAPI(search) {
-        var query = search.replace(" ", "").split(",");
+        var query = search.replaceAll(" ", "").split(",");
 
         // Get the number of users searched for
         const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;

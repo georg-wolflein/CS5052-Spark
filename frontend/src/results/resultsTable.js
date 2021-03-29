@@ -27,7 +27,6 @@ export class ResultsTable extends React.Component {
 
     render() {
         // If we dont have data, dont render the table
-        console.log(this.state.data);
         if(this.state.data.length === 0) {
             return (
                 <h3>Nothing was found</h3>

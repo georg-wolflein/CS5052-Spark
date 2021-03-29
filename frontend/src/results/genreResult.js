@@ -8,10 +8,11 @@ import { ResultsTable } from './resultsTable.js';
 class GenreResult extends BaseResult {
     async callAPI(search) {
         // Ensure each entry is captalized
-        var query = search.replace(" ", "").split(",");
+        var query = search.toLowerCase().replaceAll(" ", "").split(",");
         for(var i = 0; i < query.length; i++) {
             query[i] = query[i].charAt(0).toUpperCase() + query[i].slice(1);
-        }
+            if(query[i] === "Sci-fi") query[i] = "Sci-Fi";
+        } 
         
         // Get the number of genres searched for
         const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;

@@ -25,4 +25,6 @@ export const API = {
     (await api.post("users/favourite/genre", users)).data,
   compareMovieTastes: async (user1, user2) =>
     (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
+  getGraphOfMutualMovieViews: async () =>
+    (await api.get("users/graph/mutual_views")).data,
 };

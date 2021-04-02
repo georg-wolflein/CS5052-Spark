@@ -46,6 +46,11 @@ class GenreComparison(BaseModel):
     percentage_user2: float
 
 
+class Graph(BaseModel):
+    nodes: list
+    edges: typing.List[dict]
+
+
 def to_base_model_type(cls, row: Row):
     return cls(**{field: row[field]
                   for field in cls.__fields__})
@@ -158,6 +163,20 @@ def find_users_favourite_genre(users: typing.List[int]):
             response_model=typing.List[GenreComparison])
 def compare_movie_tastes(user1: int, user2: int):
     return model.compare_movie_tastes(user1, user2).to_dict("records")
+
+
+@router.get("/users/graph/mutual_views",
+            tags=["users"],
+            description="Obtain a graph where the users are the nodes and the edges are weighted by the total number of movies a given pair of users both watched.",
+            response_model=Graph)
+def get_graph_of_number_of_movies_in_common_between_users():
+    nodes, edges = model.get_graph_of_number_of_movies_in_common_between_users()
+    edges = [{
+        "from": orig,
+        "to": dest,
+        "weight": weight
+    } for (orig, dest), weight in edges.items()]
+    return Graph(nodes=nodes, edges=edges)
 
 
 app.include_router(router)

@@ -139,3 +139,17 @@ def compare_movie_tastes(user1: int, user2: int):
     user1_genres = user1_genres.rename(
         columns={"percentage": "percentage_user1"})
     return user1_genres.drop(columns=["count"])
+
+
+def get_graph_of_number_of_movies_in_common_between_users():
+    df = df_ratings.join(df_tags, how="outer", on=[
+                         "userId", "movieId"]).select("movieId", "userId")
+    nodes = [x["userId"] for x in df.select("userId").distinct().collect()]
+    edges = df.rdd\
+        .groupByKey()\
+        .values()\
+        .map(set)\
+        .flatMap(lambda users: [(x, y) for x in users for y in users if x != y])\
+        .map(lambda x: (x, 1))\
+        .countByKey()
+    return nodes, edges

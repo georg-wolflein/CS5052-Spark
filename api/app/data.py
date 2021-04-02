@@ -82,7 +82,7 @@ def search_user(user_id: int) -> DataFrame:
     movies = rated_movies.union(tagged_movies).distinct().join(
         df_movies, on=["movieId"], how="inner")
     movies = movies.select(movies.movieId, F.explode(
-        F.split(movies.genres, "\|")).alias("genre"))
+        movies.genres).alias("genre"))
     movies = movies.groupBy("genre").count()
     return movies
 

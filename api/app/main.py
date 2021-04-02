@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pyspark.sql import Row
 
 from __version__ import __version__
-import data
+import model
 from utils import listify, dictify, mapify
 from log import logger
 
@@ -64,7 +64,7 @@ def get_version():
             response_model=typing.Dict[str, int])
 @dictify
 def search_user(user_id: int):
-    return data.search_user(user_id).collect()
+    return model.search_user(user_id).collect()
 
 
 @router.get("/movies/search/title",
@@ -74,7 +74,7 @@ def search_user(user_id: int):
 @listify
 @mapify(partial(to_base_model_type, Movie))
 def search_movies_by_title(title: str):
-    return data.search_movies_by_title(title).collect()
+    return model.search_movies_by_title(title).collect()
 
 
 @router.get("/movies/search/year",
@@ -84,7 +84,7 @@ def search_movies_by_title(title: str):
 @listify
 @mapify(partial(to_base_model_type, Movie))
 def search_movies_by_year(year: int):
-    return data.search_movies_by_year(year).collect()
+    return model.search_movies_by_year(year).collect()
 
 
 @router.post("/movies/search/users",
@@ -94,7 +94,7 @@ def search_movies_by_year(year: int):
 @listify
 @mapify(partial(to_base_model_type, Movie))
 def search_movies_by_users(user_ids: typing.List[int]):
-    return data.search_movies_by_users(user_ids).collect()
+    return model.search_movies_by_users(user_ids).collect()
 
 
 @router.post("/movies/search/genres",
@@ -104,7 +104,7 @@ def search_movies_by_users(user_ids: typing.List[int]):
 @listify
 @mapify(partial(to_base_model_type, Movie))
 def search_movies_by_genres(genres: typing.List[str]):
-    return data.search_movies_by_genres(genres).collect()
+    return model.search_movies_by_genres(genres).collect()
 
 
 @router.get("/movies/{movie_id}/watched",
@@ -112,7 +112,7 @@ def search_movies_by_genres(genres: typing.List[str]):
             description="Get the number of users that have watched the movie.",
             response_model=int)
 def get_number_of_views_for_movie(movie_id: int):
-    return data.get_number_of_views_for_movie(movie_id)
+    return model.get_number_of_views_for_movie(movie_id)
 
 
 @router.get("/movies/{movie_id}/rating",
@@ -120,7 +120,7 @@ def get_number_of_views_for_movie(movie_id: int):
             description="Get the average rating of the movie.",
             response_model=float)
 def get_rating_for_movie(movie_id: int):
-    return data.get_rating_for_movie(movie_id)
+    return model.get_rating_for_movie(movie_id)
 
 
 @router.get("/movies/top/rated/{n}",
@@ -130,7 +130,7 @@ def get_rating_for_movie(movie_id: int):
 @listify
 @mapify(partial(to_base_model_type, RatedMovie))
 def top_n_movies_by_rating(n: int):
-    return data.top_n_movies_by_rating(n).collect()
+    return model.top_n_movies_by_rating(n).collect()
 
 
 @router.get("/movies/top/watched/{n}",
@@ -140,7 +140,7 @@ def top_n_movies_by_rating(n: int):
 @listify
 @mapify(partial(to_base_model_type, WatchedMovie))
 def top_n_movies_by_watch_count(n: int):
-    return data.top_n_movies_by_watch_count(n).collect()
+    return model.top_n_movies_by_watch_count(n).collect()
 
 
 @router.post("/users/favourite/genre",
@@ -148,7 +148,7 @@ def top_n_movies_by_watch_count(n: int):
              description="Find the favourite genre of a given user, or group of users.",
              response_model=Genre)
 def find_users_favourite_genre(users: typing.List[int]):
-    result = data.favourite_genre(users).first()
+    result = model.favourite_genre(users).first()
     return Genre(genre=result["genre"] if result else None)
 
 
@@ -157,7 +157,7 @@ def find_users_favourite_genre(users: typing.List[int]):
             description="Compare the movie tastes of two users.",
             response_model=typing.List[GenreComparison])
 def compare_movie_tastes(user1: int, user2: int):
-    return data.compare_movie_tastes(user1, user2).to_dict("records")
+    return model.compare_movie_tastes(user1, user2).to_dict("records")
 
 
 app.include_router(router)

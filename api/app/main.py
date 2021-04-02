@@ -36,6 +36,16 @@ class RatedMovie(WatchedMovie):
     rating: float
 
 
+class Genre(BaseModel):
+    genre: typing.Optional[str]
+
+
+class GenreComparison(BaseModel):
+    genre: str
+    percentage_user1: float
+    percentage_user2: float
+
+
 def to_base_model_type(cls, row: Row):
     return cls(**{field: row[field]
                   for field in cls.__fields__})
@@ -131,6 +141,23 @@ def top_n_movies_by_rating(n: int):
 @mapify(partial(to_base_model_type, WatchedMovie))
 def top_n_movies_by_watch_count(n: int):
     return data.top_n_movies_by_watch_count(n).collect()
+
+
+@router.post("/users/favourite/genre",
+             tags=["users"],
+             description="Find the favourite genre of a given user, or group of users.",
+             response_model=Genre)
+def find_users_favourite_genre(users: typing.List[int]):
+    result = data.favourite_genre(users).first()
+    return Genre(genre=result["genre"] if result else None)
+
+
+@router.get("/users/compare/{user1}/{user2}/genres",
+            tags=["users"],
+            description="Compare the movie tastes of two users.",
+            response_model=typing.List[GenreComparison])
+def compare_movie_tastes(user1: int, user2: int):
+    return data.compare_movie_tastes(user1, user2).to_dict("records")
 
 
 app.include_router(router)

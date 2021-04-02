@@ -21,4 +21,8 @@ export const API = {
   topRatedMovies: async (n) => (await api.get(`movies/top/rated/${n}`)).data,
   topWatchedMovies: async (n) =>
     (await api.get(`movies/top/watched/${n}`)).data,
+  favouriteGenre: async (...users) =>
+    (await api.post("users/favourite/genre", users)).data,
+  compareMovieTastes: async (user1, user2) =>
+    (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
 };

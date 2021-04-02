@@ -82,7 +82,7 @@ def search_user(user_id: int) -> DataFrame:
     movies = rated_movies.union(tagged_movies).distinct().join(
         df_movies, on=["movieId"], how="inner")
     movies = movies.select(movies.movieId, F.explode(
-        F.split(movies.genres, "\|")).alias("genre"))
+        movies.genres).alias("genre"))
     movies = movies.groupBy("genre").count()
     return movies
 
@@ -156,3 +156,48 @@ def top_n_movies_by_watch_count(n: int):
         .groupBy("movieId").count().join(df_movies, on=["movieId"])\
         .sort(F.col("count").desc())\
         .limit(n)
+
+
+def favourite_genre(user_ids: [int]):
+    """Find the favourite genre of a given user, or group of users. 
+
+    NOTE: we define "favourite" as the most frequent genre among all "watched" movies
+    """
+    rated_movies = df_ratings.filter(df_ratings.userId.isin(user_ids))
+    tagged_movies = df_tags.filter(df_tags.userId.isin(user_ids))
+    movies = rated_movies.join(tagged_movies,
+                               on=["userId", "movieId"],
+                               how="outer")
+    movies = movies.select("userId", "movieId").distinct()
+    movies = movies.groupBy("movieId").count().join(df_movies, on=["movieId"])
+    movies = movies.select(movies.movieId, F.explode(movies.genres).alias("genre"))\
+        .groupBy("genre").count()\
+        .sort(F.col("count").desc())
+    return movies.limit(1).select("genre")
+
+
+def _normalize_genres(df_genres: pd.DataFrame, genres: set) -> pd.DataFrame:
+    """Utility function."""
+    for genre in genres - set(df_genres.genre):
+        df_genres = df_genres.append(
+            {"genre": genre, "count": 0}, ignore_index=True)
+    df_genres["percentage"] = df_genres["count"] / \
+        df_genres["count"].sum() * 100
+    return df_genres
+
+
+def compare_movie_tastes(user1: int, user2: int):
+    """Compare the movie tastes of two users.
+
+    NOTE: the output will be presented as a bar chart of percentages.
+    """
+    user1_genres = search_user(user1).toPandas()
+    user2_genres = search_user(user2).toPandas()
+    user2_genres = user2_genres.drop(index=[0, 1])
+    genres = set(user1_genres.genre).union(user2_genres.genre)
+    user1_genres = _normalize_genres(user1_genres, genres)
+    user2_genres = _normalize_genres(user2_genres, genres)
+    user1_genres["percentage_user2"] = user2_genres["percentage"]
+    user1_genres = user1_genres.rename(
+        columns={"percentage": "percentage_user1"})
+    return user1_genres.drop(columns=["count"])

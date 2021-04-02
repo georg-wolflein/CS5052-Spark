@@ -179,4 +179,14 @@ def get_graph_of_number_of_movies_in_common_between_users():
     return Graph(nodes=nodes, edges=edges)
 
 
+@router.get("/users/{user_id}/recommendations",
+            tags=["users"],
+            description="Obtain movie recommendations for a user.",
+            response_model=typing.List[Movie])
+@listify
+@mapify(partial(to_base_model_type, Movie))
+def get_movie_recommendations(user_id: str):
+    return model.get_movie_recommendations(user_id).collect()
+
+
 app.include_router(router)

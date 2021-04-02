@@ -7,8 +7,10 @@ import os
 import typing
 import shutil
 
+from recommendations import generate_all_recommendations
+
 DATA_DIR = Path(os.getenv("DATA_DIR", "/dataset"))
-TABLES = ["links", "movies", "ratings", "tags"]
+TABLES = ["links", "movies", "ratings", "tags", "recommendations"]
 
 spark = SparkSession.builder\
     .master("local")\
@@ -80,10 +82,14 @@ def load_and_preprocess_csv():
     df_movies = df_movies.withColumn("genres",
                                      F.split("genres", "\|"))
 
+    # Train recommender and compute all recommendations
+    df_recommendations = generate_all_recommendations(df_ratings)
+
     return {"links": df_links,
             "movies": df_movies,
             "ratings": df_ratings,
-            "tags": df_tags}
+            "tags": df_tags,
+            "recommendations": df_recommendations}
 
 
 def save_to_parquet(dfs: typing.Dict[str, DataFrame]):

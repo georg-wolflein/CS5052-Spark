@@ -1,6 +1,7 @@
 import pandas as pd
 from pyspark.sql import DataFrame
 import pyspark.sql.functions as F
+import typing
 
 from data import load_or_recreate_from_parquet
 
@@ -9,6 +10,7 @@ df_movies = dfs["movies"]
 df_ratings = dfs["ratings"]
 df_links = dfs["links"]
 df_tags = dfs["tags"]
+df_recommendations = dfs["recommendations"]
 
 
 def search_user(user_id: int) -> DataFrame:
@@ -84,7 +86,7 @@ def top_n_movies_by_rating(n: int) -> DataFrame:
     return top_n
 
 
-def top_n_movies_by_watch_count(n: int):
+def top_n_movies_by_watch_count(n: int) -> DataFrame:
     """List the top N movies with the highest number of watches, ordered by the number of watches.
 
     NOTE: watch count for one movie is total number of people who rated or tagged the movie at least once
@@ -96,7 +98,7 @@ def top_n_movies_by_watch_count(n: int):
         .limit(n)
 
 
-def favourite_genre(user_ids: [int]):
+def favourite_genre(user_ids: [int]) -> DataFrame:
     """Find the favourite genre of a given user, or group of users. 
 
     NOTE: we define "favourite" as the most frequent genre among all "watched" movies
@@ -124,7 +126,7 @@ def _normalize_genres(df_genres: pd.DataFrame, genres: set) -> pd.DataFrame:
     return df_genres
 
 
-def compare_movie_tastes(user1: int, user2: int):
+def compare_movie_tastes(user1: int, user2: int) -> pd.DataFrame:
     """Compare the movie tastes of two users.
 
     NOTE: the output will be presented as a bar chart of percentages.
@@ -141,7 +143,7 @@ def compare_movie_tastes(user1: int, user2: int):
     return user1_genres.drop(columns=["count"])
 
 
-def get_graph_of_number_of_movies_in_common_between_users():
+def get_graph_of_number_of_movies_in_common_between_users() -> typing.Tuple[list, list]:
     df = df_ratings.join(df_tags, how="outer", on=[
                          "userId", "movieId"]).select("movieId", "userId")
     nodes = [x["userId"] for x in df.select("userId").distinct().collect()]
@@ -153,3 +155,10 @@ def get_graph_of_number_of_movies_in_common_between_users():
         .map(lambda x: (x, 1))\
         .countByKey()
     return nodes, edges
+
+
+def get_movie_recommendations(user_id: int) -> DataFrame:
+    return df_recommendations\
+        .filter(f"userId = {user_id}")\
+        .select(F.explode("recommendations.movieId").alias("movieId"))\
+        .join(df_movies, how="inner", on="movieId")

@@ -146,12 +146,16 @@ def compare_movie_tastes(user1: int, user2: int) -> pd.DataFrame:
 def get_graph_of_number_of_movies_in_common_between_users() -> typing.Tuple[list, list]:
     df = df_ratings.join(df_tags, how="outer", on=[
                          "userId", "movieId"]).select("movieId", "userId")
-    nodes = [x["userId"] for x in df.select("userId").distinct().collect()]
-    edges = df.rdd\
+    user_pairs = df.rdd\
         .groupByKey()\
         .values()\
         .map(set)\
-        .flatMap(lambda users: [(x, y) for x in users for y in users if x != y])\
+        .flatMap(lambda users: [(x, y) for x in users for y in users if x != y])
+    nodes = user_pairs\
+        .keys()\
+        .distinct()\
+        .collect()
+    edges = user_pairs\
         .map(lambda x: (x, 1))\
         .countByKey()
     return nodes, edges

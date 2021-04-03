@@ -39,7 +39,7 @@ export class GenreStatistics extends React.Component {
      */
     renderGraph() {
         // TODO: Actully display something using d3.js
-        const data = [12, 5, 6, 6, 9, 10];
+        const data = [12, 5, 6, 6, 9, 11];
         const svg = d3.select("#genreGraph").append("svg").attr("height", 360);
         svg.selectAll("rect")
            .data(data)

@@ -2,6 +2,7 @@ import { API } from './api.js'
 import { BaseResult } from './baseResult.js';
 import { ResultsTable } from './resultsTable.js';
 import { CompareUsers } from './compareUsers.js';
+import { GenreStatistics } from './genreStatistics.js';
 
 /**
  * Users class which handles user API searches
@@ -15,32 +16,15 @@ class UserResult extends BaseResult {
         if(items === 1) this.setState({title: "Movies watched by user " + search});
         else this.setState({title: "Movies watched by users: [" + search + "]"});
         this.setState({ 
+            query: query,
             usersNum: items, 
-            favGenre: "Loading...", 
-            genres: [],
-            genreStatus: "Loading..."
+            favGenre: "Loading..."
          });
 
         // Call the API
         return new Promise((resolve, reject) => {
             // Call the API for movie statistics
             API.searchMoviesByUsers(query).then((movies) => {
-                // Get genre breakdown if needed
-                if(this.state.usersNum === 1) {
-                    // Call the API for genre breakdown of single user
-                    API.getGenresByUser(query).then((genres) => {
-                        for(var i = 0; i < Object.keys(genres).length; i++) {
-                            var genre = [];
-                            var key = Object.keys(genres)[i];
-                            genre.push(key);
-                            genre.push(genres[key]);
-                            this.state.genres.push(genre);
-                        } 
-                    }).catch(() => {
-                        this.setState({ genreStatus: "An error occured..." });
-                    });
-                }
-
                 // Find the favorite genre
                 API.favouriteGenre(query).then((fav) => {
                     this.setState({ favGenre: fav.genre });
@@ -60,19 +44,16 @@ class UserResult extends BaseResult {
             // If we have to compare users, show the comparison
             additional = 
                 <div id="additional">
+                    <br/><hr/><br/>
                     <h1>Comparison of movie tastes</h1>
                     <CompareUsers users={ this.state.users } />
                 </div>;
         } else if(this.state.usersNum === 1) {
             // If we have to get genre breakdown, get it
-            // TODO: This should be its own component
             additional =
                 <div id="additional">
                     <br/><hr/><br/>
-                    <h1>Genre statistics</h1>
-                    { this.state.genres === [] ? ( <p>{ this.state.genreStatus }</p> ) : (
-                        <ResultsTable heading={ [ "Genre", "Count" ] } data={ this.state.genres } />
-                    )}
+                    <GenreStatistics query={ this.state.query } />
                 </div>;
         }
 

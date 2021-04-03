@@ -30,51 +30,60 @@ class SearchBar extends React.Component {
         return "/search/" + this.props.type + "/" + this.props.search;
     }
 
+    /**
+     * Called when either the button is pressed, or enter key is pressed
+     * @param history the history 
+     */
+    submit(history) {
+        if(validate("type", this.props) && validate("search", this.props)) {
+            if(this.props.search !== "") history.push(this.getURL());
+        }
+    }
+
     render() {
         return (
-            <Form inline>
-                <Form.Row>
-                    <Col xs="auto">
-                        <Form.Label htmlFor="input" srOnly>
-                            Input
-                        </Form.Label>
-                        <Form.Control isInvalid={ !validate("search", this.props) }
-                                    className="mr-sm-2" 
-                                    id="search" 
-                                    placeholder={ this.getPlaceholder() }
-                                    value={ this.props.search } 
-                                    onChange={ (e) => { this.props.onChange(e); } }/>
-                    </Col>
+            <Route render={ ({ history }) => (
+                <Form inline>
+                    <Form.Row>
+                        <Col xs="auto">
+                            <Form.Label htmlFor="input" srOnly>
+                                Input
+                            </Form.Label>
+                            <Form.Control isInvalid={ !validate("search", this.props) }
+                                        className="mr-sm-2" 
+                                        id="search" 
+                                        placeholder={ this.getPlaceholder() }
+                                        value={ this.props.search } 
+                                        onChange={ (e) => { this.props.onChange(e); } }
+                                        onKeyPress={ (e) => { if(e.key === "Enter") this.submit(history); } }/>
+                        </Col>
 
-                    <Col xs="auto">
-                        <Form.Label htmlFor="type" srOnly>
-                            Type
-                        </Form.Label>
-                        <Form.Control isInvalid={ !validate("type", this.props) }
-                                    as="select"
-                                    className="mr-sm-2"
-                                    id="type"
-                                    value={ this.props.type }
-                                    onChange={ (e) => { this.props.onChange(e); } }
-                                    custom>
-                            <option value="movie">Movie</option>
-                            <option value="user">Users</option>
-                            <option value="genre">Genres</option>
-                        </Form.Control>
-                    </Col>
+                        <Col xs="auto">
+                            <Form.Label htmlFor="type" srOnly>
+                                Type
+                            </Form.Label>
+                            <Form.Control isInvalid={ !validate("type", this.props) }
+                                        as="select"
+                                        className="mr-sm-2"
+                                        id="type"
+                                        value={ this.props.type }
+                                        onChange={ (e) => { this.props.onChange(e); } }
+                                        onKeyPress={ (e) => { if(e.key === "Enter") this.submit(history); } }
+                                        custom>
+                                <option value="movie">Movie</option>
+                                <option value="user">Users</option>
+                                <option value="genre">Genres</option>
+                            </Form.Control>
+                        </Col>
 
-                    <Col xs="auto">
-                        <Route render={ ({ history }) => (
-                            <Button onClick={ () => { 
-                                if(validate("type", this.props) && validate("search", this.props)) {
-                                    if(this.props.search !== "") history.push(this.getURL());
-                                } } }>
+                        <Col xs="auto">
+                            <Button onClick={ () => { this.submit(history); } }>
                                 Submit
                             </Button>
-                        )}/>
-                    </Col>
-                </Form.Row>
-            </Form>
+                        </Col>
+                    </Form.Row>
+                </Form>
+            )}/>
         );
     }
 }

@@ -29,11 +29,14 @@ def select_best_reg_param(df_training, df_test):
     return best_reg_param, best_rmse
 
 
-def generate_all_recommendations(df_ratings):
+def generate_all_recommendations(df_ratings, fast_mode: bool = True):
     logger.info("Generating movie recommendations")
-    (df_training, df_test) = df_ratings.randomSplit([0.8, 0.2])
-    reg_param, best_rmse = select_best_reg_param(df_training, df_test)
-    model = fit_model(df_ratings, reg_param, max_iter=7)
-    logger.info(
-        f"Selected recommender model that achieved test RMSE of {best_rmse}")
-    return model.recommendForAllUsers(10)
+    if fast_mode:
+        model = fit_model(df_ratings, .5, max_iter=5)
+    else:
+        (df_training, df_test) = df_ratings.randomSplit([0.8, 0.2])
+        reg_param, best_rmse = select_best_reg_param(df_training, df_test)
+        model = fit_model(df_ratings, reg_param, max_iter=7)
+        logger.info(
+            f"Selected recommender model that achieved test RMSE of {best_rmse}")
+    return model.recommendForAllUsers(5)

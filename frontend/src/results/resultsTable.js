@@ -2,6 +2,7 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 export class ResultsTable extends React.Component {
+    // TODO: Make this collapseable
     constructor(props) {
         super(props);
         this.state = {

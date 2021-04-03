@@ -8,22 +8,46 @@ import { CompareUsers } from './compareUsers.js';
  */
 class UserResult extends BaseResult {
     async callAPI(search) {
-        this.setState({ users: null });
         var query = search.replaceAll(" ", "").split(",");
 
         // Get the number of users searched for
         const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;
         if(items === 1) this.setState({title: "Movies watched by user " + search});
         else this.setState({title: "Movies watched by users: [" + search + "]"});
-        
-        if(items === 2) this.setState({ users: query });
+        this.setState({ 
+            usersNum: items, 
+            favGenre: "Loading...", 
+            genres: [],
+            genreStatus: "Loading..."
+         });
 
-        return new Promise((resolve, reject) => {            
-            // TODO: Given a user, get the number of movies watched per genre
+        // Call the API
+        return new Promise((resolve, reject) => {
+            // Call the API for movie statistics
+            API.searchMoviesByUsers(query).then((movies) => {
+                // Get genre breakdown if needed
+                if(this.state.usersNum === 1) {
+                    // Call the API for genre breakdown of single user
+                    API.getGenresByUser(query).then((genres) => {
+                        for(var i = 0; i < Object.keys(genres).length; i++) {
+                            var genre = [];
+                            var key = Object.keys(genres)[i];
+                            genre.push(key);
+                            genre.push(genres[key]);
+                            this.state.genres.push(genre);
+                        } 
+                    }).catch(() => {
+                        this.setState({ genreStatus: "An error occured..." });
+                    });
+                }
 
-            // Call the API
-            API.searchMoviesByUsers(query).then((value) => {
-                this.pushMovies(value, resolve);
+                // Find the favorite genre
+                API.favouriteGenre(query).then((fav) => {
+                    this.setState({ favGenre: fav.genre });
+                });
+
+                // Push the movies
+                this.pushMovies(movies, resolve);
             }).catch((reason) => {
                 reject(reason);
             });
@@ -31,24 +55,34 @@ class UserResult extends BaseResult {
     }
     
     draw() {
-        // If we have to compare users, show the comparison
-        if(this.state.users !== null) {
-            return (
-                <div id="users">
-                    <h1>{ this.state.title }</h1><br/>
-                    <ResultsTable heading={ this.state.heading } data={ this.state.movies } />
-                    <br/><hr/><br/>
-                    <h1>Comparison of users { this.state.users[0] } & { this.state.users[1] }</h1>
+        var additional;
+        if(this.state.usersNum === 2) {
+            // If we have to compare users, show the comparison
+            additional = 
+                <div id="additional">
+                    <h1>Comparison of movie tastes</h1>
                     <CompareUsers users={ this.state.users } />
-                </div>
-            )
+                </div>;
+        } else if(this.state.usersNum === 1) {
+            // If we have to get genre breakdown, get it
+            // TODO: This should be its own component
+            additional =
+                <div id="additional">
+                    <br/><hr/><br/>
+                    <h1>Genre statistics</h1>
+                    { this.state.genres === [] ? ( <p>{ this.state.genreStatus }</p> ) : (
+                        <ResultsTable heading={ [ "Genre", "Count" ] } data={ this.state.genres } />
+                    )}
+                </div>;
         }
 
-        // Otherwise, just show statistics
-        else return (
+        // Render everything
+        return (
             <div id="users">
-                <h1>{ this.state.title }</h1><br/>
+                <h1>{ this.state.title }</h1>
+                <h3>Favourite genre: { this.state.favGenre }</h3><br/>
                 <ResultsTable heading={ this.state.heading } data={ this.state.movies } />
+                { additional }
             </div>
         );
     }

@@ -24,7 +24,7 @@ export const API = {
   searchMoviesByGenres: async (genres) =>
     (await api.post("movies/search/genres", genres)).data,
 
-  // TODO: users
+  // users: done
   getGenresByUser: async (userId) =>
     (await api.get(`users/${userId}/genres`)).data,
 
@@ -41,8 +41,8 @@ export const API = {
   topWatchedMovies: async (n) =>
     (await api.get(`movies/top/watched/${n}`)).data,
 
-  // TODO: users
-  favouriteGenre: async (...users) =>
+  // users: done
+  favouriteGenre: async (users) =>
     (await api.post("users/favourite/genre", users)).data,
 
   // TODO: vis

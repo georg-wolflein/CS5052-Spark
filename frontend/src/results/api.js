@@ -35,12 +35,19 @@ export const API = {
   topWatchedMovies: async (n) =>
     (await api.get(`movies/top/watched/${n}`)).data,
 
+  // TODO: users
   favouriteGenre: async (...users) =>
     (await api.post("users/favourite/genre", users)).data,
+
+  // TODO: vis
   compareMovieTastes: async (user1, user2) =>
     (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
+
+  // TODO: graph
   getGraphOfMutualMovieViews: async () =>
     (await api.get("users/graph/mutual_views")).data,
+
+  // TODO: users
   getRecommendations: async (userId) =>
     (await api.get(`users/${userId}/recommendations`)).data,
 };

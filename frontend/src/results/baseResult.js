@@ -6,7 +6,7 @@ export class BaseResult extends React.Component {
         super(props);
         this.state = {
             title: "",
-            heading: [ "Title", "Year", "Genres", "Rating", "Watched" ],
+            heading: [ "Title", "Year", "Genres", "Additional Information" ],
             movies: [],
             loaded: false,
         }
@@ -51,11 +51,9 @@ export class BaseResult extends React.Component {
                 genres += genre + ", ";
             } movie.push(genres.substring(0, genres.length - 2));
 
-            // Rating
-            movie.push("tbd");
-
-            // Watched
-            movie.push("tbd");
+            // Rating - TODO: Make this a clickable component using rawMovie.movieId
+            movie.push(<a href="#"
+                          onClick={ () => { console.log(rawMovie.movieId); } }>Click to view</a>);
 
             // Finally push the list to be rendered
             this.state.movies.push(movie);

@@ -28,6 +28,12 @@ export const API = {
   getGenresByUser: async (userId) =>
     (await api.get(`users/${userId}/genres`)).data,
 
+  // additional info: done
+  getWatched: async (movieId) => (await api.get(`movies/${movieId}/watched`)).data,
+
+  // additional info: done
+  getRating: async (movieId) => (await api.get(`movies/${movieId}/rating`)).data,
+
   // movies: done
   topRatedMovies: async (n) => (await api.get(`movies/top/rated/${n}`)).data,
 

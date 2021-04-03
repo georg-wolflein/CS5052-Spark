@@ -1,4 +1,5 @@
 import React from 'react';
+import { AdditionalInfo } from './additionalInfo.js';
 
 export class BaseResult extends React.Component {
     _mounted = false;
@@ -51,9 +52,8 @@ export class BaseResult extends React.Component {
                 genres += genre + ", ";
             } movie.push(genres.substring(0, genres.length - 2));
 
-            // Rating - TODO: Make this a clickable component using rawMovie.movieId
-            movie.push(<a href="#"
-                          onClick={ () => { console.log(rawMovie.movieId); } }>Click to view</a>);
+            // Rating & watchers
+            movie.push(<AdditionalInfo movieId={ rawMovie.movieId } />);
 
             // Finally push the list to be rendered
             this.state.movies.push(movie);

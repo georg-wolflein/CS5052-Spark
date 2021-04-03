@@ -44,8 +44,8 @@ export const API = {
     (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
 
   // TODO: graph
-  getGraphOfMutualMovieViews: async () =>
-    (await api.get("users/graph/mutual_views")).data,
+  getGraphOfMutualMovieViews: async (...users) =>
+    (await api.post("users/graph/mutual_views", users)).data,
 
   // TODO: users
   getRecommendations: async (userId) =>

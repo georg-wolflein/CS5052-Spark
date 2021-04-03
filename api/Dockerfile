@@ -10,13 +10,13 @@ ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
 ENV WEB_CONCURRENCY=1
 
 # Specify dataset (ml-latest or ml-latest-small)
-ARG DATASET=ml-latest-small
+ARG dataset=ml-latest-small
 
 # Download dataset
 RUN mkdir -p /dataset && \
-    wget -O /tmp/dataset.zip http://files.grouplens.org/datasets/movielens/${DATASET}.zip && \
+    wget -O /tmp/dataset.zip http://files.grouplens.org/datasets/movielens/${dataset}.zip && \
     unzip /tmp/dataset.zip -d /tmp/dataset && \
-    mv /tmp/dataset/${DATASET}/* /dataset
+    mv /tmp/dataset/${dataset}/* /dataset
 ENV DATA_DIR=/dataset
 
 # Install poetry

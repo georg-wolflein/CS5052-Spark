@@ -7,6 +7,7 @@ import os
 import typing
 import shutil
 
+from log import logger
 from recommendations import generate_all_recommendations
 
 DATA_DIR = Path(os.getenv("DATA_DIR", "/dataset"))
@@ -94,7 +95,9 @@ def load_and_preprocess_csv():
 
 def save_to_parquet(dfs: typing.Dict[str, DataFrame]):
     for name, df in dfs.items():
-        df.write.parquet(str(DATA_DIR / f"{name}.parquet"))
+        filename = str(DATA_DIR / f"{name}.parquet")
+        logger.info(f"Saving {filename}")
+        df.write.parquet(str(filename))
 
 
 def load_from_parquet() -> typing.Dict[str, DataFrame]:

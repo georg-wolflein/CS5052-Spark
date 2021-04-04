@@ -34,6 +34,7 @@ You can now access the website from [`http://localhost:3000`](http://localhost:3
 Any changes to the frontend or backend code will restart the fronend and/or backend servers automatically.
 
 To get console output on the frontend, simply follow the logs of the container running the frontend:
+
 ```
 docker logs -f <container id>
 ```

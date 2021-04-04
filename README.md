@@ -16,8 +16,19 @@ To run the backend API in `prod` mode, run the following command (from the root 
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
-To access the frontend, open http://localhost:3000 in your browser.
-To access the API documentation, open http://localhost:3000/api/docs.
+You can open the following links in your browser:
+- frontend UI: http://localhost:3000
+- backend API documentation: http://localhost:3000/api/docs
+- Spark UI of Spark master: http://localhost:8080
+
+In production mode, `docker-compose` will start the following five containers:
+- frontend UI
+- backend API
+- Spark master
+- Spark worker (1)
+- Spark worker (2)
+
+Note that in development mode, it will only start the frontend UI and backend API containers, and Spark will be hosted locally inside the backend API container using 6 threads.
 
 ### Development mode
 

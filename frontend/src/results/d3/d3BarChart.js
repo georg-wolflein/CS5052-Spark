@@ -67,16 +67,9 @@ export class D3BarChart extends React.Component {
             });
         
         // Append the x axis labels to the chart
-        this.svg.selectAll("g")
-            .data(this.state.data).enter()
-            .append("text")
-            .attr("dominant-baseline", "text-before-edge")
-            .attr("text-anchor", "middle")
-            .attr("fill", "#000000")
-            .attr("x", d => x(d.key) + this.offset * 0.7)
-            .attr("y", this.height - this.offset + 5)
-            .attr("style", "font-family:Arial;font-size:11")
-            .text(d => d.key);
+        this.svg.append("g")
+            .attr("transform", `translate(0, ${this.height - this.offset})`)
+            .call(d3.axisBottom(x));
     
         // Add the y axis to the chart
         this.svg.append("g").call(d3.axisRight(y));
@@ -103,7 +96,8 @@ export class D3BarChart extends React.Component {
         this.callAPI().then(() => {
             this.setState({ loaded: true, success: true });
             this.renderGraph();
-        }).catch(() => {
+        }).catch((error) => {
+            console.error(error);
             this.setState({ loaded: true, success: false });
         });
     }

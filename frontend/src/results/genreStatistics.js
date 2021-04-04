@@ -36,7 +36,6 @@ export class GenreStatistics extends React.Component {
             this.setState({ loaded: true, success: true });
             this.renderGraph();
         }).catch((error) => {
-            console.error(error);
             this.setState({ loaded: true, success: false });
         });
     }
@@ -47,27 +46,58 @@ export class GenreStatistics extends React.Component {
     renderGraph() {
         // Make the svg to draw the graph upon responsively
         const height = 600;
+        const offset = 40;
         var svg = d3.select("#genreGraph").append("svg").attr("width", "100%").attr("height", height);
         const width = svg.node().getBoundingClientRect().width;
 
         // Make the x & y axes of data
         const x = d3.scaleBand()
             .domain(d3.map(this.state.genres, d => d.genre))
-            .range([0, width]);
+            .range([offset, width])
+            .padding(0.1);
         const y = d3.scaleLinear()
             .domain([0, d3.max(this.state.genres, d => d.count)])
-            .range([height, 0]);
-        
+            .range([height - offset, offset / 2]);
+
+        // Make a tooltip for interaction
+        const tooltip = d3.select("#genreGraph").append("div")
+            .attr("style", "z-index:10;position:absolute;visibility:hidden;padding:10px;background:rgba(0,0,0,0.7);border-radius:3px;color:#fff;")
+            .text("");
+
         // Add the data to the svg
-        svg.selectAll(".bar")
+        svg.selectAll("g")
             .data(this.state.genres).enter()
             .append("rect")
+            .attr("fill", "#ee3333")
             .attr("x", d => x(d.genre))
             .attr("y", d => y(d.count))
             .attr("width", x.bandwidth())
-            .attr("height", d => (height - y(d.count)));
-
-        // TODO: Labels & colours
+            .attr("height", d => (height - offset - y(d.count)))
+            .on("mouseover", function(d, i) {
+                tooltip.html(`${i.genre}: ${i.count}`).style("visibility", "visible");
+                d3.select(this).attr("fill", "#cc1111");
+            }).on("mousemove", (d) => {
+                tooltip.style("top", `${d.pageY + 5}px`)
+                    .style("left", `${d.pageX + 5}px`);
+            }).on("mouseout", function(d, i) {
+                tooltip.html(``).style("visibility", "hidden");
+                d3.select(this).attr("fill", "#ee3333");
+            });
+        
+        // Append the x axis labels to the chart
+        svg.selectAll("g")
+            .data(this.state.genres).enter()
+            .append("text")
+            .attr("dominant-baseline", "text-before-edge")
+            .attr("text-anchor", "middle")
+            .attr("fill", "#000000")
+            .attr("x", d => x(d.genre) + offset * 0.7)
+            .attr("y", height - offset + 5)
+            .attr("style", "font-family:Arial;font-size:11")
+            .text(d => d.genre);
+    
+        // Add the y axis to the chart
+        svg.append("g").call(d3.axisRight(y));
     }
 
     /**
@@ -94,7 +124,6 @@ export class GenreStatistics extends React.Component {
         );
 
         // Display with d3.js
-        console.log(this.state.genres);
         return (
             <div id="genreStats">
                 <h1>Genre statistics</h1>

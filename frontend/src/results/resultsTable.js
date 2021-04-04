@@ -9,7 +9,7 @@ export class ResultsTable extends React.Component {
         this.state = {
             heading: this.props.heading,
             data: this.props.data,
-            hidden: false
+            hidden: true
         };
     }
 

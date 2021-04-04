@@ -23,13 +23,20 @@ export class GenreStatistics extends React.Component {
         this._mounted = true;
         new Promise((resolve, reject) => {
             API.getGenresByUser(this.state.query).then((genres) => {
-                this.setState({ genres: genres });
+                // Need to transform the data into a nice array to work with
+                var data = [];
+                for(var i = 0; i < Object.keys(genres).length; i++) {
+                    var key = Object.keys(genres)[i];
+                    var value = genres[key];
+                    data.push({ genre: key, count: value });
+                } this.setState({ genres: data });
                 resolve();
             });
         }).then(() => {
             this.setState({ loaded: true, success: true });
             this.renderGraph();
-        }).catch(() => {
+        }).catch((error) => {
+            console.error(error);
             this.setState({ loaded: true, success: false });
         });
     }
@@ -38,18 +45,29 @@ export class GenreStatistics extends React.Component {
      * Renders the d3.js graph for genre statistics
      */
     renderGraph() {
-        // TODO: Actully display something using d3.js
-        const data = [12, 5, 6, 6, 9, 11];
-        const svg = d3.select("#genreGraph").append("svg").attr("height", 360);
-        svg.selectAll("rect")
-           .data(data)
-           .enter()
-           .append("rect")
-           .attr("x", (d, i) => i * 40)
-           .attr("y", 0)
-           .attr("width", 25)
-           .attr("height", (d, i) => d * 10)
-           .attr("fill", "red");
+        // Make the svg to draw the graph upon responsively
+        const height = 600;
+        var svg = d3.select("#genreGraph").append("svg").attr("width", "100%").attr("height", height);
+        const width = svg.node().getBoundingClientRect().width;
+
+        // Make the x & y axes of data
+        const x = d3.scaleBand()
+            .domain(d3.map(this.state.genres, d => d.genre))
+            .range([0, width]);
+        const y = d3.scaleLinear()
+            .domain([0, d3.max(this.state.genres, d => d.count)])
+            .range([height, 0]);
+        
+        // Add the data to the svg
+        svg.selectAll(".bar")
+            .data(this.state.genres).enter()
+            .append("rect")
+            .attr("x", d => x(d.genre))
+            .attr("y", d => y(d.count))
+            .attr("width", x.bandwidth())
+            .attr("height", d => (height - y(d.count)));
+
+        // TODO: Labels & colours
     }
 
     /**
@@ -81,6 +99,7 @@ export class GenreStatistics extends React.Component {
             <div id="genreStats">
                 <h1>Genre statistics</h1>
                 <div id="genreGraph"></div>
+                <br/>
             </div>
         );
     }

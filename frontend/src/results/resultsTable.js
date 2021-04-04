@@ -2,14 +2,13 @@ import React from 'react';
 import { Table } from 'react-bootstrap';
 
 export class ResultsTable extends React.Component {
-    // TODO: Make this collapseable
     constructor(props) {
         super(props);
         this.toggleCollapse = this.toggleCollapse.bind(this);
         this.state = {
             heading: this.props.heading,
             data: this.props.data,
-            hidden: true
+            hidden: false
         };
     }
 

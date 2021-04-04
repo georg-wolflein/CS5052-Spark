@@ -1,8 +1,7 @@
 import { API } from './api.js'
 import { BaseResult } from './baseResult.js';
 import { ResultsTable } from './resultsTable.js';
-import { CompareUsers } from './compareUsers.js';
-import { GenreStatistics } from './genreStatistics.js';
+import { CompareUsers, GenreStatistics } from './d3';
 
 /**
  * Users class which handles user API searches
@@ -45,8 +44,7 @@ class UserResult extends BaseResult {
             additional = 
                 <div id="additional">
                     <br/><hr/><br/>
-                    <h1>Comparison of movie tastes</h1>
-                    <CompareUsers users={ this.state.users } />
+                    <CompareUsers query={ this.state.query } />
                 </div>;
         } else if(this.state.usersNum === 1) {
             // If we have to get genre breakdown, get it

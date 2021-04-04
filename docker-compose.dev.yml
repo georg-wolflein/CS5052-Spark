@@ -10,6 +10,8 @@ services:
       - ./api/app:/app
     ports:
       - "5000:80"
+    environment:
+      SPARK_MASTER: local[6]
   frontend:
     depends_on: [api]
     build:
@@ -19,6 +21,6 @@ services:
       - ./frontend/src:/app/src
       - ./frontend/public:/app/public
     environment:
-      - REACT_APP_API_URL=http://api
+      REACT_APP_API_URL: http://api
     ports:
       - "3000:3000"

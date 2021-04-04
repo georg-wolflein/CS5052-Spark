@@ -14,8 +14,8 @@ DATA_DIR = Path(os.getenv("DATA_DIR", "/dataset"))
 TABLES = ["links", "movies", "ratings", "tags", "recommendations"]
 
 spark = SparkSession.builder\
-    .master("local")\
-    .appName("Word Count")\
+    .master(os.getenv("SPARK_MASTER", "local"))\
+    .appName("movie-app")\
     .getOrCreate()
 
 
@@ -108,8 +108,9 @@ def load_from_parquet() -> typing.Dict[str, DataFrame]:
 
 
 def load_or_recreate_from_parquet() -> typing.Dict[str, DataFrame]:
-    # Check if all parquet files exist
-    if not all((DATA_DIR / f"{name}.parquet").exists() for name in TABLES):
+    # Check if all parquet files exist (or we are forced to recompute anyway)
+    if os.getenv("FORCE_RECOMPUTE_DATASET", False) or \
+            not all((DATA_DIR / f"{name}.parquet").exists() for name in TABLES):
         # Not all parquet files exist, so we will recreate them
         for name in TABLES:
             shutil.rmtree(DATA_DIR / f"{name}.parquet", ignore_errors=True)

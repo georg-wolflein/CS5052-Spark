@@ -6,9 +6,6 @@ RUN apt-get update && \
     apt-get clean
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64/
 
-# FastAPI settings
-ENV WEB_CONCURRENCY=1
-
 # Specify dataset (ml-latest or ml-latest-small)
 ARG dataset=ml-latest-small
 
@@ -27,6 +24,8 @@ RUN pip install --upgrade pip && \
 # Install dependencies
 COPY ./pyproject.toml ./poetry.lock* /app/
 RUN poetry install --no-root --no-dev
+
+ENV WEB_CONCURRENCY=1
 
 # Development
 FROM base as dev

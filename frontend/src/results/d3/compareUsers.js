@@ -57,7 +57,7 @@ class CompareUsers extends D3Base {
             .range(["#cc1111", "#115599"]);
 
         // Make a tooltip for interaction
-        const tooltip = d3.select("#d3BarChart").append("div")
+        const tooltip = d3.select("#d3Base").append("div")
             .attr("style", "z-index:10;position:absolute;visibility:hidden;padding:10px;background:rgba(0,0,0,0.7);border-radius:3px;color:#fff;")
             .text("");
 

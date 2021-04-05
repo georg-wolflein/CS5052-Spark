@@ -2,25 +2,6 @@
 
 Our project for CS5052.
 
-## Tasks
-
-- [ ] Store dataset using the methods supported in Spark
-- [x] Search user by id, show the number of movies/genre that they have watched
-  - [x] Given a list of users, search all movies watched by each user
-- [x] Search movie by id/title, show the average rating & the number of users that have watched the movie
-- [x] Search genre, show all movies in that genre
-  - [x] Given a list of genres, search all movies belonging to each genre
-- [x] Search movies by year
-- [x] List the top n movies with highest rating, ordered by the rating
-- [x] List the top n movies with the highest number of watches, ordered by the number of watches
-
-- [x] Find the favourite genre of a given user, or group of users. Consider and justify how you will define ‘favourite’.
-- [x] Compare the movie tastes of two users. Consider and justify how you will compare and present the data.
-
-- [ ] Cluster users by movie taste.
-- [ ] Visualisation and interaction of the data set, using external libraries
-- [ ] Provide movie recommendations, e.g., user x liked movies A, B and C therefore they might like movies X, Y and Z.
-
 ## Running
 
 The website may either be run in development (`dev`) or production (`prod`) mode.
@@ -35,8 +16,19 @@ To run the backend API in `prod` mode, run the following command (from the root 
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
-To access the frontend, open http://localhost:3000 in your browser.
-To access the API documentation, open http://localhost:3000/api/docs.
+You can open the following links in your browser:
+- frontend UI: http://localhost:3000
+- backend API documentation: http://localhost:3000/api/docs
+- Spark UI of Spark master: http://localhost:8080
+
+In production mode, `docker-compose` will start the following five containers:
+- frontend UI
+- backend API
+- Spark master
+- Spark worker (1)
+- Spark worker (2)
+
+Note that in development mode, it will only start the frontend UI and backend API containers, and Spark will be hosted locally inside the backend API container using 6 threads.
 
 ### Development mode
 
@@ -53,6 +45,7 @@ You can now access the website from [`http://localhost:3000`](http://localhost:3
 Any changes to the frontend or backend code will restart the fronend and/or backend servers automatically.
 
 To get console output on the frontend, simply follow the logs of the container running the frontend:
+
 ```
 docker logs -f <container id>
 ```

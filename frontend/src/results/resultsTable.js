@@ -8,7 +8,8 @@ export class ResultsTable extends React.Component {
         this.state = {
             heading: this.props.heading,
             data: this.props.data,
-            hidden: true
+            hidden: true,
+            hasToggled: false
         };
     }
 
@@ -36,7 +37,7 @@ export class ResultsTable extends React.Component {
     }
 
     toggleCollapse() {
-        this.setState({ hidden: !this.state.hidden });
+        this.setState({ hidden: !this.state.hidden, hasToggled: true });
     }
 
     render() {
@@ -49,16 +50,20 @@ export class ResultsTable extends React.Component {
 
         // Otherwise we have data, show it
         return (
-            <Table responsive>
-                <thead onClick={ this.toggleCollapse }>
-                    <tr key="heading">
-                        { this.renderRow(this.state.heading, 0, true) }
-                    </tr>
-                </thead>
-                <tbody>
-                    { this.renderData(this.state.data, this.state.hidden) }
-                </tbody>
-            </Table>
+            <div id="table">
+                <small onClick={ this.toggleCollapse }
+                        hidden={ this.state.hasToggled }>Click here to hide</small>
+                <Table responsive>
+                    <thead onClick={ this.toggleCollapse }>
+                        <tr key="heading">
+                            { this.renderRow(this.state.heading, 0, true) }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        { this.renderData(this.state.data, this.state.hidden) }
+                    </tbody>
+                </Table>
+            </div>
         );
     }
 }

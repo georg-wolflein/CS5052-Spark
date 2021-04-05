@@ -1,7 +1,7 @@
 import { API } from './api.js'
 import { BaseResult } from './baseResult.js';
 import { ResultsTable } from './resultsTable.js';
-import { CompareUsers, GenreStatistics } from './d3';
+import { CompareUsers, GenreStatistics, ClusterUsers } from './d3';
 import { Recommendations } from './recommendations.js';
 
 /**
@@ -27,8 +27,6 @@ class UserResult extends BaseResult {
             API.searchMoviesByUsers(query).then((movies) => {
                 // Push the movies
                 this.pushMovies(movies, this.state.movies);
-
-                // TODO: Graph of viewers here
                 resolve();
 
                 // Find the favorite genre
@@ -43,24 +41,20 @@ class UserResult extends BaseResult {
     
     draw() {
         var additional;
-        if(this.state.usersNum === 2) {
-            // If we have to compare users, show the comparison
-            additional = 
-                <div id="additional">
-                    <br/><hr/><br/>
-                    <CompareUsers query={ this.state.query } />
-                </div>;
-        } else if(this.state.usersNum === 1) {
-            // If we have to get genre breakdown, get it
-            additional =
-                <div id="additional">
-                    <br/><hr/><br/>
+        if(this.state.usersNum === 1) {
+            // If we have one user, display recommendations / breakdown
+            additional = <div id="additional">
                     <Recommendations pushMovies={ this.pushMovies } heading={ this.state.heading } userId={ this.state.query } />
                     <br/><hr/><br/>
                     <GenreStatistics query={ this.state.query } />
                 </div>;
+            
+        } else if(this.state.usersNum === 2) {
+            // If we have two, display the graph to compare them
+            additional = <CompareUsers query={ this.state.query } />;
         } else {
-            // TODO display force directed graph here
+            // Otherwise, display the force connected graph for them
+            additional = <ClusterUsers query={ this.state.query } />;
         }
 
         // Render everything
@@ -69,6 +63,7 @@ class UserResult extends BaseResult {
                 <h1>{ this.state.title }</h1>
                 <h3>Favourite genre: { this.state.favGenre }</h3><br/>
                 <ResultsTable heading={ this.state.heading } data={ this.state.movies } />
+                <br/><hr/><br/>
                 { additional }
             </div>
         );

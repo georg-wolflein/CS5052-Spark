@@ -1,8 +1,8 @@
 import { API } from '../api.js'
-import { D3BarChart } from './d3BarChart.js';
+import { D3Base } from './d3Base.js';
 import * as d3 from "d3";
 
-class CompareUsers extends D3BarChart {
+class CompareUsers extends D3Base {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,7 +24,7 @@ class CompareUsers extends D3BarChart {
                     data.push({ genre: key, [`User ${this.state.user1}`]: value, [`User ${this.state.user2}`]: value2 });
                 } this.setState({ data: data });
                 resolve();
-            });
+            }).catch(() => { reject(); });
         });
     }
 

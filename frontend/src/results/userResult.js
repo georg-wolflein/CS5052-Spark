@@ -9,10 +9,21 @@ import { Recommendations } from './recommendations.js';
  */
 class UserResult extends BaseResult {
     async callAPI(search) {
-        var query = search.replaceAll(" ", "").split(",");
+        // Get a list of user ids & the number of them
+        var query = search.replaceAll(" ", "");
+        if(query.includes("-")) {
+            query = query.split("-");
+            var data = [];
+            for(var i = query[0]; i <= query[1]; i++) {
+                data.push(i);
+            } query = data;
+        } else if(query.includes(",")) {
+            query = query.split(",");
+        } else {
+            query = [query];
+        } const items = query.length;
 
         // Get the number of users searched for
-        const items = search.match(/,/g) === null ? 1 : search.match(/,/g).length + 1;
         if(items === 1) this.setState({title: `Movies watched by user ${search}` });
         else this.setState({title: `Movies watched by users: [${search}]` });
         this.setState({ 

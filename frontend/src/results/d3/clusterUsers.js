@@ -33,15 +33,15 @@ class ClusterUsers extends D3Base {
         this.preRenderGraph();
 
         const chargeForce = d3.forceManyBody(this.state.graph.edges);
-        chargeForce.strength(d => -100 * d.value);
-        chargeForce.distanceMin(d => d.value);
+        chargeForce.strength(e => -2 * e.value);
+        chargeForce.distanceMin(e => e.value);
 
         const sim = d3.forceSimulation(this.state.graph.nodes)
             .force("link", d3.forceLink(this.state.graph.edges).id(d => d.value))
             .force("charge", chargeForce)
             .force("center", d3.forceCenter(this.width / 2, this.height / 2));
 
-        
+        // TODO: Normalize weights for opacity etc, add tooltip        
         var drag = (sim) => d3.drag()
                 .on("start", (e) => {
                     if(!e.active) sim.alphaTarget(0.3).restart();
@@ -58,10 +58,10 @@ class ClusterUsers extends D3Base {
 
         const edge = this.svg.append("g")
             .attr("stroke", "#999")
-            .attr("stroke-opactiy", 0.2)
             .selectAll("line")
             .data(this.state.graph.edges).join("line")
-            .attr("stroke-width", d => Math.sqrt(d.weight));
+            .attr("stroke-width", d => Math.sqrt(d.weight / 2))
+            .attr("stroke-opacity", d => Math.sqrt(d.weight));
 
         const node = this.svg.append("g")
             .attr("stroke", "#fff")

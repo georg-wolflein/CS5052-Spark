@@ -53,7 +53,7 @@ export const API = {
   getGraphOfMutualMovieViews: async (...users) =>
     (await api.post("users/graph/mutual_views", users)).data,
 
-  // TODO: users
+  // users: done
   getRecommendations: async (userId) =>
     (await api.get(`users/${userId}/recommendations`)).data,
 };

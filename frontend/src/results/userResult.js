@@ -27,6 +27,8 @@ class UserResult extends BaseResult {
             API.searchMoviesByUsers(query).then((movies) => {
                 // Push the movies
                 this.pushMovies(movies, this.state.movies);
+
+                // TODO: Graph of viewers here
                 resolve();
 
                 // Find the favorite genre
@@ -57,6 +59,8 @@ class UserResult extends BaseResult {
                     <br/><hr/><br/>
                     <GenreStatistics query={ this.state.query } />
                 </div>;
+        } else {
+            // TODO display force directed graph here
         }
 
         // Render everything

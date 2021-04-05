@@ -14,7 +14,8 @@ class MovieResult extends BaseResult {
                 var rated = query.substring("top ".length, query.indexOf(" rated"));
                 this.setState({title: "Top " + rated + " rated movies"}); 
                 API.topRatedMovies(rated).then((value) => {
-                    this.pushMovies(value, resolve);
+                    this.pushMovies(value, this.state.movies);
+                    resolve();
                 }).catch((reason) => {
                     reject(reason);
                 });
@@ -25,7 +26,8 @@ class MovieResult extends BaseResult {
                 var watched = query.substring("top ".length, query.indexOf(" watched"));
                 this.setState({title: "Top " + watched + " watched movies"}); 
                 API.topWatchedMovies(watched).then((value) => {
-                    this.pushMovies(value, resolve);
+                    this.pushMovies(value, this.state.movies);
+                    resolve();
                 }).catch((reason) => {
                     reject(reason);
                 });
@@ -35,7 +37,8 @@ class MovieResult extends BaseResult {
             else if(/^\d\d\d\d$/.test(query)) {
                 this.setState({title: "Movies in " + query}); 
                 API.searchMoviesByYear(query).then((value) => {
-                    this.pushMovies(value, resolve);
+                    this.pushMovies(value, this.state.movies);
+                    resolve();
                 }).catch((reason) => {
                     reject(reason);
                 });
@@ -45,7 +48,8 @@ class MovieResult extends BaseResult {
             else {
                 this.setState({title: "Movies with a title like \"" + search + "\""}); 
                 API.searchMoviesByTitle(query).then((value) => {
-                    this.pushMovies(value, resolve);
+                    this.pushMovies(value, this.state.movies);
+                    resolve();
                 }).catch((reason) => {
                     reject(reason);
                 });

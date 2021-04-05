@@ -5,7 +5,6 @@ import SearchBar from './search.js'
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import Result from './result.js';
-import Visualisations from './visualisations.js';
 
 /**
  * Component for holding the main layout of the application.
@@ -30,9 +29,7 @@ class App extends React.Component {
             <Router forceRefresh={ true }>
                 <Navbar bg="dark" variant="dark">
                     <Navbar.Brand href="/">Spark</Navbar.Brand>
-                    <Nav className="mr-auto">
-                        <Nav.Link href="/visualisations">Visualisations</Nav.Link>
-                    </Nav>
+                    <Nav className="mr-auto" />
                     <SearchBar search={ this.state.search }
                         type={ this.state.type }
                         onChange={ this.handleChange } />
@@ -43,11 +40,10 @@ class App extends React.Component {
                         <Route exact path="/" render={ () => (
                             <div className="home">
                                 <h1>Spark Practical</h1>
-                                <p>Enter a search query, or <Link to="/visualisations">explore visualisations</Link>!</p>
+                                <p>Enter a search query using the search box above!</p>
                             </div>
                         )}/>
                         <Route path="/search/:type/:search" component={ Result } />
-                        <Route path='/visualisations' component={ Visualisations } />
                         <Route path="*" render={ () => (
                             <div className="home">
                                 <h1>404</h1>

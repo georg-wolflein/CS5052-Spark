@@ -45,15 +45,15 @@ export const API = {
   favouriteGenre: async (users) =>
     (await api.post("users/favourite/genre", users)).data,
 
-  // TODO: vis
+  // users: done
   compareMovieTastes: async (user1, user2) =>
     (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
 
-  // TODO: graph
-  getGraphOfMutualMovieViews: async (...users) =>
+  // users: done
+  getGraphOfMutualMovieViews: async (users) =>
     (await api.post("users/graph/mutual_views", users)).data,
 
-  // TODO: users
+  // users: done
   getRecommendations: async (userId) =>
     (await api.get(`users/${userId}/recommendations`)).data,
 };

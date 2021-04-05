@@ -45,7 +45,7 @@ export const API = {
   favouriteGenre: async (users) =>
     (await api.post("users/favourite/genre", users)).data,
 
-  // TODO: vis
+  // users: done
   compareMovieTastes: async (user1, user2) =>
     (await api.get(`users/compare/${user1}/${user2}/genres`)).data,
 

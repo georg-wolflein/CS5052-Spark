@@ -38,7 +38,7 @@ export class BaseResult extends React.Component {
      * Push a number of movies into the state
      * @param movies the movies
      */
-    pushMovies(movies, cb) {
+    pushMovies(movies, storage) {
         for(const rawMovie of movies) {
             var movie = [];
 
@@ -56,8 +56,8 @@ export class BaseResult extends React.Component {
             movie.push(<AdditionalInfo movieId={ rawMovie.movieId } />);
 
             // Finally push the list to be rendered
-            this.state.movies.push(movie);
-        } cb();
+            storage.push(movie);
+        }
     }
 
     /**

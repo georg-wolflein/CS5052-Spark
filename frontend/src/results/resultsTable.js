@@ -36,7 +36,6 @@ export class ResultsTable extends React.Component {
     }
 
     toggleCollapse() {
-        console.log("uwu");
         this.setState({ hidden: !this.state.hidden });
     }
 

@@ -3,7 +3,6 @@ import * as d3 from "d3";
 
 export class D3BarChart extends React.Component {
     _mounted = false;
-
     constructor(props) {
         super(props);
         this.state = {

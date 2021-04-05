@@ -22,7 +22,8 @@ class GenreResult extends BaseResult {
         return new Promise((resolve, reject) => {
             // Call the API
             API.searchMoviesByGenres(query).then((value) => {
-                this.pushMovies(value, resolve);
+                this.pushMovies(value, this.state.movies);
+                resolve();
             }).catch((reason) => {
                 reject(reason);
             });

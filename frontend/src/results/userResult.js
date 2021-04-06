@@ -11,17 +11,25 @@ class UserResult extends BaseResult {
     async callAPI(search) {
         // Get a list of user ids & the number of them
         var query = search.replaceAll(" ", "");
+        var data, i;
         if(query.includes("-")) {
             query = query.split("-");
-            var data = [];
-            for(var i = query[0]; i <= query[1]; i++) {
-                data.push(i);
+            data = [];
+            for(i = query[0]; i <= query[1]; i++) {
+                data.push(parseInt(i));
             } query = data;
         } else if(query.includes(",")) {
             query = query.split(",");
         } else {
             query = [query];
-        } const items = query.length;
+        } 
+        
+        // Convert to a number 
+        data = [];
+        for(i = 0; i < query.length; i++) {
+            data.push(parseInt(query[i]));
+        } query = data;
+        const items = query.length;
 
         // Get the number of users searched for
         if(items === 1) this.setState({title: `Movies watched by user ${search}` });

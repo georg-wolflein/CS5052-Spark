@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8 as base
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7 as base
 
 # Install Java
 RUN apt-get update && \

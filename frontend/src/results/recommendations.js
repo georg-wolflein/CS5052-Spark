@@ -61,7 +61,7 @@ export class Recommendations extends React.Component {
         return (
             <div id="recs">
                 <h1>{ this.state.title }</h1>
-                <ResultsTable heading={ this.state.heading } data={ this.state.recs } />
+                <ResultsTable heading={ this.state.heading } data={ this.state.recs } error={ "No recommendations" }/>
             </div>
         );
         

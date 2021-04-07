@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+from pyspark import SparkContext
 from pyspark.sql import SparkSession, DataFrame
 import pyspark.sql.functions as F
 import pyspark.sql.types as T
@@ -13,6 +14,7 @@ from recommendations import generate_all_recommendations
 DATA_DIR = Path(os.getenv("DATA_DIR", "/dataset"))
 TABLES = ["links", "movies", "ratings", "tags", "recommendations"]
 
+SparkContext.setSystemProperty('spark.executor.memory', '2g')
 spark = SparkSession.builder\
     .master(os.getenv("SPARK_MASTER", "local"))\
     .appName("movie-app")\

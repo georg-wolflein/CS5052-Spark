@@ -49,17 +49,3 @@ To get console output on the frontend, simply follow the logs of the container r
 ```
 docker logs -f <container id>
 ```
-
-## Search Interface
-
-To search through the dataset, we have implemented a permissive search bar to display the results. This search bar allows the user to search using an input box (which controls the actual search query) & a dropdown option list (which controls the mode to search with).
-
-Search methods are as follows:
-
-- **Single user**: In user mode, a single integer (`id`) will display movie & genre statistics about the user with that id
-- **Multiple users**: In user mode, a comma separated list of integers (`ids`) will display the movie & genre statistics of **the collection of users** including their favourite genre as a group
-  - If only 2 users are specified, we additionally show a visualisation of the differences between their movie tastes
-- **Single movie**: In movie mode, a single integer (`id`) or string (`title`) will display the average rating of that movie, as well as the number of users who have watched that movie
-- **Genres**: In genre mode, a comma separated list of strings (`genres`) will show the list of movies with that genre
-
-Advanced tasks such as clustering or visualisations of the dataset as a whole will be given in an additional page. The movie recommendations will probably be added to the single user search mode.

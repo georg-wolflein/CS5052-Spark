@@ -6,6 +6,7 @@ export class ResultsTable extends React.Component {
         super(props);
         this.toggleCollapse = this.toggleCollapse.bind(this);
         this.state = {
+            error: this.props.error,
             heading: this.props.heading,
             data: this.props.data,
             hidden: false,
@@ -44,7 +45,7 @@ export class ResultsTable extends React.Component {
         // If we dont have data, dont render the table
         if(this.state.data.length === 0) {
             return (
-                <h3>Nothing was found</h3>
+                <h3>{ this.state.error }</h3>
             );
         }
 

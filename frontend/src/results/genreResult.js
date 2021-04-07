@@ -34,7 +34,7 @@ class GenreResult extends BaseResult {
         return (
             <div id="genres">
                 <h1>{ this.state.title }</h1><br/>
-                <ResultsTable heading={ this.state.heading } data={ this.state.movies } />
+                <ResultsTable heading={ this.state.heading } data={ this.state.movies } error={ "No movies found" }/>
             </div>
         );
     }

@@ -33,7 +33,7 @@ class UserResult extends BaseResult {
 
         // Get the number of users searched for
         if(items === 1) this.setState({title: `Movies watched by user ${search}` });
-        else this.setState({title: `Movies watched by users: [${search}]` });
+        else this.setState({title: `Movies watched by all users: [${search}]` });
         this.setState({ 
             query: query,
             usersNum: items, 
@@ -81,7 +81,7 @@ class UserResult extends BaseResult {
             <div id="users">
                 <h1>{ this.state.title }</h1>
                 <h3>Favourite genre: { this.state.favGenre }</h3><br/>
-                <ResultsTable heading={ this.state.heading } data={ this.state.movies } />
+                <ResultsTable heading={ this.state.heading } data={ this.state.movies } error={ "No common movies found" } />
                 <br/><hr/><br/>
                 { additional }
             </div>
